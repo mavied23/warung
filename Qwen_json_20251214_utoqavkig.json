@@ -1,0 +1,58 @@
+[
+  {
+    "id": "001",
+    "nama": "Indomie Soto",
+    "harga": 5500,
+    "stok": 12,
+    "kategori": "Makanan Instan"
+  },
+  {
+    "id": "002",
+    "nama": "Indomie Goreng",
+    "harga": 5500,
+    "stok": 8,
+    "kategori": "Makanan Instan"
+  },
+  {
+    "id": "003",
+    "nama": "Aqua 600ml",
+    "harga": 3500,
+    "stok": 5,
+    "kategori": "Minuman"
+  },
+  {
+    "id": "004",
+    "nama": "Teh Pucuk 320ml",
+    "harga": 4500,
+    "stok": 0,
+    "kategori": "Minuman"
+  },
+  {
+    "id": "005",
+    "nama": "Beras 1kg (Santap)",
+    "harga": 15000,
+    "stok": 3,
+    "kategori": "Sembako"
+  },
+  {
+    "id": "006",
+    "nama": "Gula Pasir 500gr",
+    "harga": 8500,
+    "stok": 10,
+    "kategori": "Sembako"
+  },
+  {
+    "id": "007",
+    "nama": "Chitato Rasa Ayam",
+    "harga": 6000,
+    "stok": 4,
+    "kategori": "Snack"
+  },
+  {
+    "id": "008",
+    "nama": "Susu Sachet",
+    "harga": 1500,
+    "stok": 20,
+    "kategori": "Minuman"
+  }
+]
