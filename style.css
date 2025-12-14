@@ -5,43 +5,6 @@
 }
 
 :root {
-<<<<<<< HEAD
-  --bg: #ffffff;
-  --text: #000000;
-  --text-light: #666666;
-  --border: #eaeaea;
-  --card-bg: #fafafa;
-  --accent: #e91e63;
-  --accent-hover: #c2185b;
-  --glitch-color-1: #ff4081;
-  --glitch-color-2: #3f51b5;
-  --shadow: 0 4px 16px rgba(0,0,0,0.02);
-  --transition: all 0.3s ease;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-  line-height: 1.5;
-  overflow-x: hidden;
-  position: relative;
-}
-
-.background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 15% 85%, rgba(233, 30, 99, 0.02) 0%, transparent 15%),
-    radial-gradient(circle at 85% 15%, rgba(63, 81, 181, 0.01) 0%, transparent 20%);
-  z-index: -1;
-}
-
-/* Navbar ramping */
-=======
   --bg: #0c0c0c;
   --card: #141414;
   --text: #f0f0f0;
@@ -124,7 +87,6 @@ body {
 }
 
 /* ===== HEADER ===== */
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 header {
   background: var(--bg);
   padding: 16px 20px;
@@ -138,10 +100,6 @@ header {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: 1.6rem;
-<<<<<<< HEAD
-  letter-spacing: -0.5px;
-=======
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
   color: var(--text);
   margin: 0;
   display: flex;
@@ -151,12 +109,6 @@ header {
 
 .header-content h1 span {
   color: var(--accent);
-<<<<<<< HEAD
-  font-weight: 600;
-}
-
-/* Container */
-=======
 }
 
 .mode-toggle {
@@ -183,17 +135,12 @@ header {
 }
 
 /* ===== CONTAINER ===== */
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 .container {
   max-width: 1000px;
   margin: 24px auto;
   padding: 0 20px;
 }
 
-<<<<<<< HEAD
-/* Search */
-=======
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 .search-section {
   display: flex;
   gap: 12px;
@@ -209,30 +156,18 @@ header {
   border-radius: 6px;
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
-<<<<<<< HEAD
-  background: var(--bg);
-  transition: var(--transition);
-=======
   background: var(--card);
   color: var(--text);
   transition: all 0.3s;
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 }
 
 #search:focus, #category:focus {
   outline: none;
   border-color: var(--accent);
-<<<<<<< HEAD
-  box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
-}
-
-/* Grid */
-=======
   box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
 }
 
 /* ===== GRID & CARD ===== */
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -241,34 +176,16 @@ header {
 }
 
 .card {
-<<<<<<< HEAD
-  background: var(--card-bg);
-  border-radius: 10px;
-  padding: 20px 14px;
-  text-align: center;
-  transition: var(--transition);
-=======
   background: var(--card);
   border-radius: 10px;
   padding: 20px 14px;
   text-align: center;
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
   border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
   cursor: pointer;
-<<<<<<< HEAD
-}
-
-/* Efek Glitch pada hover */
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
-  border-color: #d8d8d8;
-=======
   transform-style: preserve-3d;
   transition: transform 0.2s, box-shadow 0.3s;
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 }
 
 .card h3 {
@@ -297,19 +214,6 @@ header {
   margin-top: 6px;
 }
 
-<<<<<<< HEAD
-.stock.ok { background: #f5f5f5; color: #444; }
-.stock.low { background: #fff3e0; color: #ef6c00; }
-.stock.out { background: #ffebee; color: #c62828; }
-
-/* Glitch Effect */
-@keyframes glitch-1 {
-  0% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(2px, -2px); }
-=======
 .stock.ok { background: rgba(255,255,255,0.05); color: var(--text); }
 .stock.low { background: rgba(255,243,224,0.1); color: #ffb300; }
 .stock.out { background: rgba(255,235,238,0.1); color: #ef5350; }
@@ -321,20 +225,10 @@ header {
   40% { transform: translate(-1px, -1px); }
   60% { transform: translate(1px, 1px); }
   80% { transform: translate(1px, -1px); }
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
   100% { transform: translate(0); }
 }
 
 @keyframes glitch-2 {
-<<<<<<< HEAD
-  0%, 100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-  20% { clip-path: polygon(0 20%, 100% 25%, 100% 85%, 0 80%); }
-  40% { clip-path: polygon(0 50%, 100% 55%, 100% 90%, 0 85%); }
-}
-
-.card:hover h3 {
-  animation: glitch-1 0.3s infinite, glitch-2 0.6s infinite;
-=======
   0%, 100% { clip-path: inset(0); }
   25% { clip-path: inset(5% 30% 20% 10%); }
   50% { clip-path: inset(15% 10% 5% 30%); }
@@ -348,7 +242,6 @@ header {
 
 .card:hover h3 {
   animation: glitch-1 0.2s infinite, glitch-2 0.4s infinite;
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
   color: var(--text);
 }
 
@@ -359,24 +252,6 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-<<<<<<< HEAD
-  opacity: 0.8;
-}
-
-.card:hover h3::before {
-  color: var(--glitch-color-1);
-  animation: glitch-1 0.3s infinite -0.02s;
-  clip-path: polygon(0 20%, 100% 25%, 100% 100%, 0 100%);
-}
-
-.card:hover h3::after {
-  color: var(--glitch-color-2);
-  animation: glitch-1 0.3s infinite -0.04s;
-  clip-path: polygon(0 0, 100% 0, 100% 75%, 0 70%);
-}
-
-/* Loading */
-=======
 }
 
 .card:hover h3::before {
@@ -397,7 +272,6 @@ header {
 }
 
 /* ===== LOADING ===== */
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 .loading {
   text-align: center;
   padding: 30px;
@@ -405,11 +279,7 @@ header {
   font-size: 1rem;
 }
 
-<<<<<<< HEAD
-/* Footer */
-=======
 /* ===== FOOTER ===== */
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 footer {
   text-align: center;
   padding: 20px;
@@ -430,25 +300,9 @@ footer {
   position: relative;
 }
 
-<<<<<<< HEAD
-.contact a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--accent);
-  transition: width 0.3s;
-}
-
-.contact a:hover::after {
-  width: 100%;
-=======
 .contact a:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 }
 
 /* ===== RESPONSIF ===== */
@@ -456,21 +310,9 @@ footer {
   .search-section { flex-direction: column; }
   #search, #category { min-width: 100%; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-<<<<<<< HEAD
-  header { padding: 14px 16px; }
-  .header-content h1 { font-size: 1.4rem; }
-}
-
-@media (max-width: 480px) {
-  .card { padding: 16px 10px; }
-  .card h3 { font-size: 1rem; }
-  .card .price { font-size: 1.15rem; }
-}
-=======
 }
 
 @media (max-width: 480px) {
   header { padding: 14px 16px; }
   .header-content h1 { font-size: 1.4rem; }
 }
->>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
