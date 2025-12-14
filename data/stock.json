@@ -1,0 +1,30 @@
+[
+  {
+    "id": "001",
+    "nama": "Indomie Soto",
+    "harga": 5500,
+    "stok": 12,
+    "kategori": "Makanan Instan"
+  },
+  {
+    "id": "002",
+    "nama": "Aqua 600ml",
+    "harga": 3500,
+    "stok": 5,
+    "kategori": "Minuman"
+  },
+  {
+    "id": "003",
+    "nama": "Gula Pasir 500gr",
+    "harga": 8500,
+    "stok": 10,
+    "kategori": "Sembako"
+  },
+  {
+    "id": "004",
+    "nama": "Chitato Ayam",
+    "harga": 6000,
+    "stok": 2,
+    "kategori": "Snack"
+  }
+]
