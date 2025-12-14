@@ -1,80 +1,92 @@
-// Muat data dari stock.json
-async function loadProducts() {
-  try {
-    const res = await fetch('data/stock.json?' + new Date().getTime());
-    if (!res.ok) throw new Error('Gagal memuat data');
-    const products = await res.json();
-    
-    displayProducts(products);
-    updateLastModified();
-  } catch (err) {
-    document.getElementById('products').innerHTML = 
-      `<div class="card" style="grid-column: 1 / -1; background: #f8d7da; color: #721c24; padding: 20px;">
-        ❌ Error: ${err.message}<br>
-        Cek file <code>data/stock.json</code> atau koneksi internet.
-      </div>`;
-    document.getElementById('loading').style.display = 'none';
-  }
-}
+// ==== SETUP ====
+const grid = document.getElementById('grid');
+const searchInput = document.getElementById('search');
+const categorySelect = document.getElementById('category');
+const lastUpdateEl = document.getElementById('last-update');
 
-function displayProducts(products) {
-  const container = document.getElementById('products');
-  const searchInput = document.getElementById('search').value.toLowerCase();
-  const categoryFilter = document.getElementById('category').value;
+// Gunakan localStorage untuk data (bisa ganti ke stock.json jika mau)
+let products = JSON.parse(localStorage.getItem('warung_products')) || [
+  { id: '001', name: 'Indomie Soto', price: 5500, stock: 12, category: 'Makanan Instan' },
+  { id: '002', name: 'Aqua 600ml', price: 3500, stock: 5, category: 'Minuman' },
+  { id: '003', name: 'Gula Pasir', price: 8500, stock: 10, category: 'Sembako' },
+  { id: '004', name: 'Chitato', price: 6000, stock: 0, category: 'Snack' },
+];
 
-  let filtered = products.filter(p => 
-    (p.nama.toLowerCase().includes(searchInput)) &&
-    (categoryFilter === '' || p.kategori === categoryFilter)
+// ==== RENDER ====
+function render() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const categoryFilter = categorySelect.value;
+
+  const filtered = products.filter(p => 
+    (p.name.toLowerCase().includes(searchTerm)) &&
+    (categoryFilter === '' || p.category === categoryFilter)
   );
 
-  if (filtered.length === 0) {
-    container.innerHTML = `
-      <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
-        <p style="font-size: 1.1rem; color: #777;">Barang tidak ditemukan.</p>
-        <p style="font-size: 0.9rem; color: #999; margin-top: 10px;">Coba ubah kata kunci atau filter kategori.</p>
+  grid.innerHTML = filtered.map(p => `
+    <div class="card" data-id="${p.id}">
+      <h3 data-text="${p.name}">${p.name}</h3>
+      <div class="price">Rp ${p.price.toLocaleString('id')}</div>
+      <div class="stock ${p.stock <= 0 ? 'out' : p.stock <= 3 ? 'low' : 'ok'}">
+        Stok: ${p.stock <= 0 ? 'Habis' : p.stock}
       </div>
-    `;
-  } else {
-    container.innerHTML = filtered.map(p => `
-      <div class="card">
-        <h3>${p.nama}</h3>
-        <div class="price">Rp ${p.harga.toLocaleString('id')}</div>
-        <div class="stock ${p.stok <= 0 ? 'out' : p.stok <= 3 ? 'low' : 'ok'}">
-          Stok: ${p.stok <= 0 ? 'Habis' : p.stok}
-        </div>
-        <small>${p.kategori}</small>
-      </div>
-    `).join('');
-  }
+      <small>${p.category}</small>
+    </div>
+  `).join('') || '<div class="card" style="grid-column:1/-1;padding:30px;">Tidak ada barang.</div>';
 
-  document.getElementById('loading').style.display = 'none';
+  // Simpan ke localStorage
+  localStorage.setItem('warung_products', JSON.stringify(products));
+
+  // Update waktu
+  lastUpdateEl.textContent = new Date().toLocaleString('id-ID', {
+    day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+  });
 }
 
-// Update tampilan saat input berubah
-document.getElementById('search').addEventListener('input', loadProducts);
-document.getElementById('category').addEventListener('change', loadProducts);
+// ==== EVENT LISTENERS ====
+searchInput.addEventListener('input', render);
+categorySelect.addEventListener('change', render);
 
-// Update waktu terakhir modifikasi file stock.json
-function updateLastModified() {
-  fetch('data/stock.json')
-    .then(res => {
-      const lastMod = res.headers.get('last-modified');
-      if (lastMod) {
-        const date = new Date(lastMod);
-        document.getElementById('last-update').textContent = 
-          date.toLocaleString('id-ID', { 
-            day: 'numeric', 
-            month: 'short', 
-            year: 'numeric',
-            hour: '2-digit', 
-            minute: '2-digit' 
-          });
-      } else {
-        document.getElementById('last-update').textContent = 'Tidak diketahui';
-      }
-    })
-    .catch(() => document.getElementById('last-update').textContent = 'Gagal memuat');
+// Mode toggle
+document.querySelector('.mode-toggle').addEventListener('click', () => {
+  document.body.classList.toggle('light');
+  localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+});
+
+// Custom cursor
+const cursor = document.querySelector('.cursor');
+const trail = document.querySelector('.cursor-trail');
+
+document.addEventListener('mousemove', (e) => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  trail.style.left = e.clientX + 'px';
+  trail.style.top = e.clientY + 'px';
+});
+
+// 3D Tilt (opsional — aktifkan jika mau)
+/*
+const cards = document.querySelectorAll('.card');
+cards.forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+*/
+
+// ==== INIT ====
+// Set theme from localStorage
+if (localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light');
 }
 
-// Jalankan saat halaman dimuat
-document.addEventListener('DOMContentLoaded', loadProducts);
+render();

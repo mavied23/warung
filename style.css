@@ -5,6 +5,7 @@
 }
 
 :root {
+<<<<<<< HEAD
   --bg: #ffffff;
   --text: #000000;
   --text-light: #666666;
@@ -40,6 +41,90 @@ body {
 }
 
 /* Navbar ramping */
+=======
+  --bg: #0c0c0c;
+  --card: #141414;
+  --text: #f0f0f0;
+  --text-light: #a0a0a0;
+  --border: #222;
+  --accent: #e91e63;
+  --accent-hover: #c2185b;
+  --glitch-1: #ff4081;
+  --glitch-2: #7e57c2;
+  --shader-1: #c2185b;
+  --shader-2: #7e57c2;
+  --shader-3: #2196f3;
+}
+
+body.light {
+  --bg: #ffffff;
+  --card: #f8f9fa;
+  --text: #111;
+  --text-light: #666;
+  --border: #eaeaea;
+  --accent: #e91e63;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color 0.4s, color 0.4s;
+  position: relative;
+}
+
+/* ===== NOISE GRAIN ===== */
+.noise {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="4"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.02"/></svg>');
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+/* ===== SHADER BACKGROUND (no green!) ===== */
+.shader {
+  position: fixed;
+  inset: -30%;
+  z-index: -1;
+  background: conic-gradient(from var(--a, 0deg),
+    var(--shader-1), var(--shader-2), var(--shader-3),
+    var(--shader-1));
+  filter: blur(120px);
+  animation: spin 20s linear infinite;
+  opacity: 0.15;
+}
+
+@keyframes spin { to { --a: 360deg; } }
+
+/* ===== CUSTOM CURSOR ===== */
+.cursor {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-trail {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.15;
+  filter: blur(20px);
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+}
+
+/* ===== HEADER ===== */
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 header {
   background: var(--bg);
   padding: 16px 20px;
@@ -53,7 +138,10 @@ header {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: 1.6rem;
+<<<<<<< HEAD
   letter-spacing: -0.5px;
+=======
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
   color: var(--text);
   margin: 0;
   display: flex;
@@ -63,17 +151,49 @@ header {
 
 .header-content h1 span {
   color: var(--accent);
+<<<<<<< HEAD
   font-weight: 600;
 }
 
 /* Container */
+=======
+}
+
+.mode-toggle {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.mode-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* ===== CONTAINER ===== */
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 .container {
   max-width: 1000px;
   margin: 24px auto;
   padding: 0 20px;
 }
 
+<<<<<<< HEAD
 /* Search */
+=======
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 .search-section {
   display: flex;
   gap: 12px;
@@ -89,17 +209,30 @@ header {
   border-radius: 6px;
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
+<<<<<<< HEAD
   background: var(--bg);
   transition: var(--transition);
+=======
+  background: var(--card);
+  color: var(--text);
+  transition: all 0.3s;
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 }
 
 #search:focus, #category:focus {
   outline: none;
   border-color: var(--accent);
+<<<<<<< HEAD
   box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
 }
 
 /* Grid */
+=======
+  box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+}
+
+/* ===== GRID & CARD ===== */
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -108,15 +241,23 @@ header {
 }
 
 .card {
+<<<<<<< HEAD
   background: var(--card-bg);
   border-radius: 10px;
   padding: 20px 14px;
   text-align: center;
   transition: var(--transition);
+=======
+  background: var(--card);
+  border-radius: 10px;
+  padding: 20px 14px;
+  text-align: center;
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
   border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
   cursor: pointer;
+<<<<<<< HEAD
 }
 
 /* Efek Glitch pada hover */
@@ -124,6 +265,10 @@ header {
   transform: translateY(-3px);
   box-shadow: var(--shadow);
   border-color: #d8d8d8;
+=======
+  transform-style: preserve-3d;
+  transition: transform 0.2s, box-shadow 0.3s;
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 }
 
 .card h3 {
@@ -152,6 +297,7 @@ header {
   margin-top: 6px;
 }
 
+<<<<<<< HEAD
 .stock.ok { background: #f5f5f5; color: #444; }
 .stock.low { background: #fff3e0; color: #ef6c00; }
 .stock.out { background: #ffebee; color: #c62828; }
@@ -163,10 +309,24 @@ header {
   40% { transform: translate(-2px, -2px); }
   60% { transform: translate(2px, 2px); }
   80% { transform: translate(2px, -2px); }
+=======
+.stock.ok { background: rgba(255,255,255,0.05); color: var(--text); }
+.stock.low { background: rgba(255,243,224,0.1); color: #ffb300; }
+.stock.out { background: rgba(255,235,238,0.1); color: #ef5350; }
+
+/* ===== GLITCH EFFECT ===== */
+@keyframes glitch-1 {
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
   100% { transform: translate(0); }
 }
 
 @keyframes glitch-2 {
+<<<<<<< HEAD
   0%, 100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
   20% { clip-path: polygon(0 20%, 100% 25%, 100% 85%, 0 80%); }
   40% { clip-path: polygon(0 50%, 100% 55%, 100% 90%, 0 85%); }
@@ -174,6 +334,21 @@ header {
 
 .card:hover h3 {
   animation: glitch-1 0.3s infinite, glitch-2 0.6s infinite;
+=======
+  0%, 100% { clip-path: inset(0); }
+  25% { clip-path: inset(5% 30% 20% 10%); }
+  50% { clip-path: inset(15% 10% 5% 30%); }
+}
+
+.card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  border-color: rgba(233, 30, 99, 0.3);
+}
+
+.card:hover h3 {
+  animation: glitch-1 0.2s infinite, glitch-2 0.4s infinite;
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
   color: var(--text);
 }
 
@@ -184,6 +359,7 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+<<<<<<< HEAD
   opacity: 0.8;
 }
 
@@ -200,6 +376,28 @@ header {
 }
 
 /* Loading */
+=======
+}
+
+.card:hover h3::before {
+  color: var(--glitch-1);
+  animation: glitch-1 0.2s infinite -0.02s;
+  clip-path: inset(0 40% 0 0);
+}
+
+.card:hover h3::after {
+  color: var(--glitch-2);
+  animation: glitch-1 0.2s infinite -0.04s;
+  clip-path: inset(0 0 0 60%);
+}
+
+/* ===== 3D TILT (dari MODE TERLARANG) ===== */
+.card {
+  transform: rotateX(0) rotateY(0) scale(1);
+}
+
+/* ===== LOADING ===== */
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 .loading {
   text-align: center;
   padding: 30px;
@@ -207,7 +405,11 @@ header {
   font-size: 1rem;
 }
 
+<<<<<<< HEAD
 /* Footer */
+=======
+/* ===== FOOTER ===== */
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 footer {
   text-align: center;
   padding: 20px;
@@ -228,6 +430,7 @@ footer {
   position: relative;
 }
 
+<<<<<<< HEAD
 .contact a::after {
   content: '';
   position: absolute;
@@ -241,13 +444,19 @@ footer {
 
 .contact a:hover::after {
   width: 100%;
+=======
+.contact a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
 }
 
-/* Responsif */
+/* ===== RESPONSIF ===== */
 @media (max-width: 768px) {
   .search-section { flex-direction: column; }
   #search, #category { min-width: 100%; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+<<<<<<< HEAD
   header { padding: 14px 16px; }
   .header-content h1 { font-size: 1.4rem; }
 }
@@ -257,3 +466,11 @@ footer {
   .card h3 { font-size: 1rem; }
   .card .price { font-size: 1.15rem; }
 }
+=======
+}
+
+@media (max-width: 480px) {
+  header { padding: 14px 16px; }
+  .header-content h1 { font-size: 1.4rem; }
+}
+>>>>>>> 22e1aa6 (feat: glitch edition — modern classic black-white)
