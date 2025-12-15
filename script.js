@@ -5,7 +5,7 @@ const categorySelect = document.getElementById('category');
 const lastUpdateEl = document.getElementById('last-update');
 const loadingEl = document.getElementById('loading');
 
-// Gunakan localStorage untuk fallback jika stock.json gagal
+// Gunakan data dummy jika stock.json gagal
 let products = [];
 
 // Muat data dari stock.json
@@ -18,25 +18,44 @@ async function loadProducts() {
     updateLastModified();
   } catch (err) {
     console.error('Gagal muat data:', err);
-    // Fallback: tampilkan pesan error
-    grid.innerHTML = `
-      <div class="card" style="grid-column: 1 / -1; padding: 30px; text-align: center;">
-        <p style="color: #ef5350; font-weight: 600;">❌ Gagal muat daftar produk.</p>
-        <p style="color: #a0a0a0; font-size: 0.9rem; margin-top: 10px;">
-          Periksa file <code>data/stock.json</code> atau koneksi internet.
-        </p>
-      </div>
-    `;
+    // Tampilkan pesan error
+    if (grid) {
+      grid.innerHTML = `
+        <div class="card" style="grid-column: 1 / -1; padding: 30px; text-align: center;">
+          <p style="color: #ef5350; font-weight: 600;">❌ Gagal muat daftar produk.</p>
+          <p style="color: #a0a0a0; font-size: 0.9rem; margin-top: 10px;">
+            Periksa file <code>data/stock.json</code> atau koneksi internet.
+          </p>
+        </div>
+      `;
+    }
     loadingEl.style.display = 'none';
   }
 }
 
 function render() {
-  const searchTerm = searchInput.value.toLowerCase();
-  const categoryFilter = categorySelect.value;
+  // Jika grid tidak ditemukan, hentikan
+  if (!grid) {
+    console.error('Elemen #products tidak ditemukan');
+    return;
+  }
+
+  const searchTerm = searchInput?.value.toLowerCase() || '';
+  const categoryFilter = categorySelect?.value || '';
+
+  // Jika products belum diinisialisasi, tampilkan pesan
+  if (!products || products.length === 0) {
+    grid.innerHTML = `
+      <div class="card" style="grid-column: 1 / -1; padding: 30px; text-align: center;">
+        <p style="color: #a0a0a0;">Data produk kosong.</p>
+      </div>
+    `;
+    loadingEl.style.display = 'none';
+    return;
+  }
 
   const filtered = products.filter(p => 
-    (p.nama.toLowerCase().includes(searchTerm)) &&
+    (p.nama && p.nama.toLowerCase().includes(searchTerm)) &&
     (categoryFilter === '' || p.kategori === categoryFilter)
   );
 
@@ -79,18 +98,22 @@ function updateLastModified() {
 }
 
 // Event Listeners
-searchInput.addEventListener('input', () => {
-  loadingEl.style.display = 'block';
-  setTimeout(render, 100); // Debounce
-});
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    loadingEl.style.display = 'block';
+    setTimeout(render, 100);
+  });
+}
 
-categorySelect.addEventListener('change', () => {
-  loadingEl.style.display = 'block';
-  setTimeout(render, 100);
-});
+if (categorySelect) {
+  categorySelect.addEventListener('change', () => {
+    loadingEl.style.display = 'block';
+    setTimeout(render, 100);
+  });
+}
 
 // Mode toggle
-document.querySelector('.mode-toggle').addEventListener('click', () => {
+document.querySelector('.mode-toggle')?.addEventListener('click', () => {
   document.body.classList.toggle('light');
   localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
 });
@@ -99,12 +122,14 @@ document.querySelector('.mode-toggle').addEventListener('click', () => {
 const cursor = document.querySelector('.cursor');
 const trail = document.querySelector('.cursor-trail');
 
-document.addEventListener('mousemove', (e) => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
-  trail.style.left = e.clientX + 'px';
-  trail.style.top = e.clientY + 'px';
-});
+if (cursor && trail) {
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    trail.style.left = e.clientX + 'px';
+    trail.style.top = e.clientY + 'px';
+  });
+}
 
 // Inisialisasi
 document.addEventListener('DOMContentLoaded', loadProducts);
