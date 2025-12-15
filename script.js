@@ -1,64 +1,93 @@
 // ==== SETUP ====
-const grid = document.getElementById('grid');
+const grid = document.getElementById('products');
 const searchInput = document.getElementById('search');
 const categorySelect = document.getElementById('category');
 const lastUpdateEl = document.getElementById('last-update');
+const loadingEl = document.getElementById('loading');
 
-// Muat data dari stock.json
+// Gunakan localStorage untuk fallback jika stock.json gagal
 let products = [];
 
+// Muat data dari stock.json
 async function loadProducts() {
   try {
     const res = await fetch('data/stock.json?' + Date.now());
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     products = await res.json();
     render();
     updateLastModified();
   } catch (err) {
     console.error('Gagal muat data:', err);
-    document.getElementById('products').innerHTML = 
-      `<div class="card" style="grid-column:1/-1;padding:30px;color:#ef5350">
-        ❌ Gagal muat daftar produk. Periksa file <code>data/stock.json</code>.
-      </div>`;
-    document.getElementById('loading').style.display = 'none';
+    // Fallback: tampilkan pesan error
+    grid.innerHTML = `
+      <div class="card" style="grid-column: 1 / -1; padding: 30px; text-align: center;">
+        <p style="color: #ef5350; font-weight: 600;">❌ Gagal muat daftar produk.</p>
+        <p style="color: #a0a0a0; font-size: 0.9rem; margin-top: 10px;">
+          Periksa file <code>data/stock.json</code> atau koneksi internet.
+        </p>
+      </div>
+    `;
+    loadingEl.style.display = 'none';
   }
 }
 
-// Panggil saat halaman dimuat
-document.addEventListener('DOMContentLoaded', loadProducts);
-
-// ==== RENDER ====
 function render() {
   const searchTerm = searchInput.value.toLowerCase();
   const categoryFilter = categorySelect.value;
 
   const filtered = products.filter(p => 
-    (p.name.toLowerCase().includes(searchTerm)) &&
-    (categoryFilter === '' || p.category === categoryFilter)
+    (p.nama.toLowerCase().includes(searchTerm)) &&
+    (categoryFilter === '' || p.kategori === categoryFilter)
   );
 
-  grid.innerHTML = filtered.map(p => `
-    <div class="card" data-id="${p.id}">
-      <h3 data-text="${p.name}">${p.name}</h3>
-      <div class="price">Rp ${p.price.toLocaleString('id')}</div>
-      <div class="stock ${p.stock <= 0 ? 'out' : p.stock <= 3 ? 'low' : 'ok'}">
-        Stok: ${p.stock <= 0 ? 'Habis' : p.stock}
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="card" style="grid-column: 1 / -1; padding: 30px; text-align: center;">
+        <p style="color: #a0a0a0;">Tidak ada barang yang cocok.</p>
       </div>
-      <small>${p.category}</small>
-    </div>
-  `).join('') || '<div class="card" style="grid-column:1/-1;padding:30px;">Tidak ada barang.</div>';
+    `;
+  } else {
+    grid.innerHTML = filtered.map(p => `
+      <div class="card" data-id="${p.id}">
+        <h3 data-text="${p.nama}">${p.nama}</h3>
+        <div class="price">Rp ${p.harga.toLocaleString('id')}</div>
+        <div class="stock ${p.stok <= 0 ? 'out' : p.stok <= 3 ? 'low' : 'ok'}">
+          Stok: ${p.stok <= 0 ? 'Habis' : p.stok}
+        </div>
+        <small>${p.kategori}</small>
+      </div>
+    `).join('');
+  }
 
-  // Simpan ke localStorage
-  localStorage.setItem('warung_products', JSON.stringify(products));
-
-  // Update waktu
-  lastUpdateEl.textContent = new Date().toLocaleString('id-ID', {
-    day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
-  });
+  loadingEl.style.display = 'none';
 }
 
-// ==== EVENT LISTENERS ====
-searchInput.addEventListener('input', render);
-categorySelect.addEventListener('change', render);
+function updateLastModified() {
+  fetch('data/stock.json')
+    .then(res => {
+      const lastMod = res.headers.get('last-modified');
+      if (lastMod) {
+        const date = new Date(lastMod);
+        lastUpdateEl.textContent = date.toLocaleString('id-ID', {
+          day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+        });
+      } else {
+        lastUpdateEl.textContent = 'Tidak diketahui';
+      }
+    })
+    .catch(() => lastUpdateEl.textContent = 'Gagal memuat');
+}
+
+// Event Listeners
+searchInput.addEventListener('input', () => {
+  loadingEl.style.display = 'block';
+  setTimeout(render, 100); // Debounce
+});
+
+categorySelect.addEventListener('change', () => {
+  loadingEl.style.display = 'block';
+  setTimeout(render, 100);
+});
 
 // Mode toggle
 document.querySelector('.mode-toggle').addEventListener('click', () => {
@@ -77,30 +106,5 @@ document.addEventListener('mousemove', (e) => {
   trail.style.top = e.clientY + 'px';
 });
 
-// 3D Tilt (opsional — aktifkan jika mau)
-/*
-const cards = document.querySelectorAll('.card');
-cards.forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
-});
-*/
-
-// ==== INIT ====
-// Set theme from localStorage
-if (localStorage.getItem('theme') === 'light') {
-  document.body.classList.add('light');
-}
-
-render();
+// Inisialisasi
+document.addEventListener('DOMContentLoaded', loadProducts);

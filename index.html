@@ -9,41 +9,43 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>📦</text></svg>">
 </head>
 <body>
-  <!-- Shader Background (subtle, no green) -->
+  <!-- Shader Background -->
   <div class="shader"></div>
   
   <!-- Noise Grain -->
   <div class="noise"></div>
 
-  <!-- Cursor Custom -->
+  <!-- Custom Cursor -->
   <div class="cursor"></div>
   <div class="cursor-trail"></div>
 
   <!-- Mode Toggle -->
   <button class="mode-toggle" aria-label="Toggle mode">🌗</button>
 
-  <!-- Header Minimalis -->
+  <!-- Header -->
   <header>
     <div class="header-content">
       <h1>WARUNG<span>.</span></h1>
     </div>
   </header>
 
-  <!-- Konten Utama -->
+  <!-- Main Content -->
   <main class="container">
     <div class="search-section">
       <input type="text" id="search" placeholder="Cari barang…" />
       <select id="category">
         <option value="">Semua</option>
-        <option value="Makanan Instan">Makanan Instan</option>
+        <option value="Kebersihan">Kebersihan</option>
+        <option value="Makanan Ringan">Makanan Ringan</option>
         <option value="Minuman">Minuman</option>
-        <option value="Sembako">Sembako</option>
-        <option value="Snack">Snack</option>
+        <option value="Mie Instan">Mie Instan</option>
+        <option value="Lain-Lain">Lain-Lain</option>
+        <option value="Bumbu & Masak">Bumbu & Masak</option>
       </select>
     </div>
 
     <div id="products" class="grid"></div>
-    <div id="loading" class="loading">Memuat data…</div>
+    <div id="loading" class="loading">Memuat data...</div>
   </main>
 
   <!-- Footer -->

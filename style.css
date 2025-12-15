@@ -48,7 +48,7 @@ body {
   z-index: 2;
 }
 
-/* ===== SHADER BACKGROUND (no green!) ===== */
+/* ===== SHADER BACKGROUND ===== */
 .shader {
   position: fixed;
   inset: -30%;
@@ -264,11 +264,6 @@ header {
   color: var(--glitch-2);
   animation: glitch-1 0.2s infinite -0.04s;
   clip-path: inset(0 0 0 60%);
-}
-
-/* ===== 3D TILT (dari MODE TERLARANG) ===== */
-.card {
-  transform: rotateX(0) rotateY(0) scale(1);
 }
 
 /* ===== LOADING ===== */
