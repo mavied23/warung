@@ -4,13 +4,27 @@ const searchInput = document.getElementById('search');
 const categorySelect = document.getElementById('category');
 const lastUpdateEl = document.getElementById('last-update');
 
-// Gunakan localStorage untuk data (bisa ganti ke stock.json jika mau)
-let products = JSON.parse(localStorage.getItem('warung_products')) || [
-  { id: '001', name: 'Indomie Soto', price: 5500, stock: 12, category: 'Makanan Instan' },
-  { id: '002', name: 'Aqua 600ml', price: 3500, stock: 5, category: 'Minuman' },
-  { id: '003', name: 'Gula Pasir', price: 8500, stock: 10, category: 'Sembako' },
-  { id: '004', name: 'Chitato', price: 6000, stock: 0, category: 'Snack' },
-];
+// Muat data dari stock.json
+let products = [];
+
+async function loadProducts() {
+  try {
+    const res = await fetch('data/stock.json?' + Date.now());
+    products = await res.json();
+    render();
+    updateLastModified();
+  } catch (err) {
+    console.error('Gagal muat data:', err);
+    document.getElementById('products').innerHTML = 
+      `<div class="card" style="grid-column:1/-1;padding:30px;color:#ef5350">
+        ❌ Gagal muat daftar produk. Periksa file <code>data/stock.json</code>.
+      </div>`;
+    document.getElementById('loading').style.display = 'none';
+  }
+}
+
+// Panggil saat halaman dimuat
+document.addEventListener('DOMContentLoaded', loadProducts);
 
 // ==== RENDER ====
 function render() {
