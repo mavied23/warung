@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keranjang • WARUNG AMANAH MANDIRI</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>🛒 Keranjang Belanja</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="cartContent">
+      <!-- Diisi oleh JS -->
+    </div>
+
+    <div class="cart-actions">
+      <a href="index.html" class="btn-secondary">← Kembali ke Toko</a>
+      <button class="btn-clear" onclick="clearCart()">Hapus Semua</button>
+    </div>
+  </main>
+
+  <script>
+    // Ambil keranjang dari localStorage
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function clearCart() {
+      localStorage.removeItem('cart');
+      location.reload();
+    }
+
+    function renderCart() {
+      const content = document.getElementById('cartContent');
+      if (!content) return;
+
+      if (cart.length === 0) {
+        content.innerHTML = `
+          <div class="card" style="grid-column:1/-1;text-align:center;padding:40px">
+            <p style="font-size:1.2rem">🛒 Keranjang kosong</p>
+            <p style="margin-top:10px">
+              <a href="index.html" style="color:var(--accent);text-decoration:underline">Kembali ke toko</a>
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      const total = cart.reduce((sum, item) => sum + item.harga * item.qty, 0);
+
+      content.innerHTML = `
+        <div class="cart-list">
+          ${cart.map(item => `
+            <div class="cart-item-full">
+              <div>
+                <strong>${item.nama}</strong><br>
+                <small>${item.qty} × Rp ${item.harga.toLocaleString('id-ID')}</small>
+              </div>
+              <div>Rp ${(item.harga * item.qty).toLocaleString('id-ID')}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="cart-total-section">
+          <h3>Total: Rp ${total.toLocaleString('id-ID')}</h3>
+          <div class="instructions">
+            <p>✅ Ambil barang sesuai jumlah di keranjang</p>
+            <p>✅ Bayar tunai di kotak sebelah kiri / QRIS di sebelah kanan</p>
+            <p>✅ Uang pas lebih dihargai</p>
+          </div>
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCart);
+  </script>
+
+  <style>
+    .cart-list {
+      margin-bottom: 30px;
+    }
+
+    .cart-item-full {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-total-section {
+      background: var(--card);
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .cart-total-section h3 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .instructions {
+      background: rgba(38, 166, 154, 0.05);
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary, .btn-clear {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .btn-clear {
+      background: #ef5350;
+      color: white;
+    }
+  </style>
+</body>
+</html>

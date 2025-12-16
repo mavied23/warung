@@ -26,6 +26,11 @@
   <header>
     <div class="header-content">
       <h1>WARUNG AMANAH MANDIRI<span>.</span></h1>
+      <div class="cart-summary">
+      <span>🛒 <span id="cartCountFooter">0</span> item</span>
+      <span>Total: Rp <span id="cartTotalFooter">0</span></span>
+      <a href="cart.html" class="btn-cart">Lihat Keranjang</a>
+    </div>
     </div>
   </header>
 
@@ -44,6 +49,23 @@
       </select>
     </div>
 
+    <!-- Keranjang Mini -->
+     <a href="cart.html">
+      <div class="cart-badge" id="cartBadge">
+        <span>🛒</span>
+        <span id="cartCount">0</span>
+      </div></a>
+
+      <!-- Modal Keranjang (opsional) -->
+      <div class="cart-modal" id="cartModal">
+        <h3>Keranjang Belanja</h3>
+        <div id="cartItems"></div>
+        <div class="cart-total">
+          Total: <strong>Rp <span id="cartTotal">0</span></strong>
+        </div>
+        <button class="add" onclick="clearCart()">Hapus Semua</button>
+      </div>
+
     <div id="products" class="grid"></div>
     <div id="loading" class="loading">Memuat data...</div>
   </main>
@@ -53,6 +75,7 @@
     <p class="update-time">Update: <span id="last-update">12/15/2025</span></p>
     <p class="contact">Kritik dan Saran <a href="https://wa.me/6289659848900">Hubungi kami</a></p>
   </footer>
+  <!-- Footer -->
 
   <script src="script.js"></script>
 </body>

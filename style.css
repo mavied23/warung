@@ -37,7 +37,168 @@ body {
   transition: background-color 0.4s, color 0.4s;
   position: relative;
 }
+/* ===== KERANJANG ===== */
+.cart-badge {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--accent);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4);
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s;
+}
 
+.cart-badge:hover {
+  transform: scale(1.1);
+}
+
+.cart-toggle {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background: var(--accent);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.cart-toggle:hover {
+  transform: scale(1.1);
+}
+
+.cart-modal {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  z-index: 999;
+  display: none;
+}
+
+.cart-modal h3 {
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item .name { flex: 1; }
+.cart-item .qty { width: 80px; text-align: center; }
+.cart-item .price { width: 100px; text-align: right; }
+
+.cart-total {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: right;
+  color: var(--accent);
+}
+
+.cart-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.cart-controls button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Di dalam card — tambahkan tombol qty */
+.qty-control {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.qty-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.qty-btn:hover {
+  background: var(--accent);
+  color: white;
+}
+/* ===== FOOTER SUMMARY ===== */
+.cart-summary {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-cart {
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.btn-cart:hover {
+  opacity: 0.9;
+}
 /* ===== NOISE GRAIN ===== */
 .noise {
   position: fixed;
