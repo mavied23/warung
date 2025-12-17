@@ -26,6 +26,23 @@
   </main>
 
   <script>
+  // Mode toggle untuk cart.html
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedMode = localStorage.getItem('theme') || 'light';
+    if (savedMode === 'light') {
+      document.body.classList.add('light');
+    } else {
+      document.body.classList.remove('light');
+    }
+  });
+
+  function clearCart() {
+    localStorage.removeItem('cart');
+    location.reload();
+  }
+
+  // ... (sisanya: renderCart, dll)
+
     // Ambil keranjang dari localStorage
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
 

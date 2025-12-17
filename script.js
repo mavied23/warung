@@ -71,9 +71,9 @@ function render() {
           Stok: ${p.stok <= 0 ? 'Habis' : p.stok}
         </div>
         <div class="qty-control">
-          <button onclick="updateQty('${p.id}', -1)">−</button>
-          <span>${qty}</span>
-          <button onclick="updateQty('${p.id}', 1)">+</button>
+          <button class="qty-btn" onclick="updateQty('${p.id}', -1)">-</button>
+          <span class="qty-value">${qty}</span>
+          <button class="qty-btn" onclick="updateQty('${p.id}', 1)">+</button>
         </div>
         <small>${p.kategori}</small>
       </div>
@@ -156,10 +156,38 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
   updateCartUI();
 });
-// ==== MODE TOGGLE ====
+// ==== MODE TOGGLE — DEFAULT LIGHT ====
 function initModeToggle() {
   const toggleBtn = document.querySelector('.mode-toggle');
   if (!toggleBtn) return;
+
+  // Baca dari localStorage, default = 'light'
+  const savedMode = localStorage.getItem('theme') || 'light';
+  
+  // Terapkan mode
+  if (savedMode === 'dark') {
+    document.body.classList.remove('light'); // dark = tanpa class
+    toggleBtn.textContent = '🌑'; // ikon gelap aktif
+  } else {
+    document.body.classList.add('light'); // light = ada class
+    toggleBtn.textContent = '🌕'; // ikon terang aktif
+  }
+
+  // Event listener
+  toggleBtn.addEventListener('click', () => {
+    if (document.body.classList.contains('light')) {
+      // Ganti ke dark
+      document.body.classList.remove('light');
+      localStorage.setItem('theme', 'dark');
+      toggleBtn.textContent = '🌑';
+    } else {
+      // Ganti ke light
+      document.body.classList.add('light');
+      localStorage.setItem('theme', 'light');
+      toggleBtn.textContent = '🌕';
+    }
+  });
+}
 
   // Baca preferensi dari localStorage atau sistem
   const savedMode = localStorage.getItem('theme');
@@ -186,11 +214,10 @@ function initModeToggle() {
     // Update ikon
     toggleBtn.textContent = isLight ? '🌘' : '🌗';
   });
-}
 
-// Jalankan saat DOM siap
+
 document.addEventListener('DOMContentLoaded', () => {
-  initModeToggle();
+  initModeToggle(); // ✅ jalankan dulu
   loadProducts();
   updateCartUI();
 });
