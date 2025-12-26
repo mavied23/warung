@@ -65,6 +65,7 @@ function render() {
 
     return `
       <div class="card">
+        <img src="${p.image}" alt="${p.nama}" class="product-image">
         <h3>${p.nama}</h3>
         <div class="price">Rp ${p.harga.toLocaleString('id-ID')}</div>
         <div class="stock ${p.stok <= 0 ? 'out' : p.stok <= 3 ? 'low' : 'ok'}">
@@ -151,37 +152,30 @@ categorySelect?.addEventListener('change', () => {
   setTimeout(render, 150);
 });
 
-// ==== INIT ====
-document.addEventListener('DOMContentLoaded', () => {
-  loadProducts();
-  updateCartUI();
-});
-// ==== MODE TOGGLE — DEFAULT LIGHT ====
+// ==== MODE TOGGLE ====
 function initModeToggle() {
-  const toggleBtn = document.querySelector('.mode-toggle');
+  const toggleBtn = document.getElementById('modeToggle');
   if (!toggleBtn) return;
 
   // Baca dari localStorage, default = 'light'
   const savedMode = localStorage.getItem('theme') || 'light';
-  
+
   // Terapkan mode
   if (savedMode === 'dark') {
-    document.body.classList.remove('light'); // dark = tanpa class
-    toggleBtn.textContent = '🌑'; // ikon gelap aktif
+    document.body.classList.remove('light');
+    toggleBtn.textContent = '🌑';
   } else {
-    document.body.classList.add('light'); // light = ada class
-    toggleBtn.textContent = '🌕'; // ikon terang aktif
+    document.body.classList.add('light');
+    toggleBtn.textContent = '🌕';
   }
 
   // Event listener
   toggleBtn.addEventListener('click', () => {
     if (document.body.classList.contains('light')) {
-      // Ganti ke dark
       document.body.classList.remove('light');
       localStorage.setItem('theme', 'dark');
       toggleBtn.textContent = '🌑';
     } else {
-      // Ganti ke light
       document.body.classList.add('light');
       localStorage.setItem('theme', 'light');
       toggleBtn.textContent = '🌕';
@@ -189,35 +183,9 @@ function initModeToggle() {
   });
 }
 
-  // Baca preferensi dari localStorage atau sistem
-  const savedMode = localStorage.getItem('theme');
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  
-  // Tentukan mode awal
-  const initialMode = savedMode 
-    ? savedMode 
-    : (systemPrefersDark ? 'dark' : 'light');
-
-  // Terapkan mode
-  document.body.className = initialMode === 'dark' ? '' : 'light'; // dark = default (tanpa class), light = ada class 'light'
-
-  // Update teks tombol
-  toggleBtn.textContent = initialMode === 'dark' ? '🌗' : '🌘';
-
-  // Pasang event listener
-  toggleBtn.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    
-    const isLight = document.body.classList.contains('light');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    
-    // Update ikon
-    toggleBtn.textContent = isLight ? '🌘' : '🌗';
-  });
-
-
+// ==== INIT ====
 document.addEventListener('DOMContentLoaded', () => {
-  initModeToggle(); // ✅ jalankan dulu
+  initModeToggle();
   loadProducts();
   updateCartUI();
 });

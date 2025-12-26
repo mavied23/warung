@@ -162,7 +162,7 @@ body {
   height: 50px;
   border-radius: 50%;
   background: var(--card);
-  border: 3px solid var(--card);
+  border: 1px solid var(--border);
   color: var(--text);
   font-weight: 600;
   cursor: pointer;
@@ -347,6 +347,15 @@ header {
   cursor: pointer;
   transform-style: preserve-3d;
   transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.product-image {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  object-fit: cover;
 }
 
 .card h3 {

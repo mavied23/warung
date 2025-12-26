@@ -1,282 +1,474 @@
 [
   {
+    "id": "s09",
+    "nama": "Biskuit Gery All",
+    "harga": 1500,
+    "stok": 55,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Biskuit%20Gery%20All"
+  },
+  {
+    "id": "s09",
+    "nama": "Biskuit Gery All",
+    "harga": 1500,
+    "stok": 55,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Biskuit%20Gery%20All"
+  },
+  {
+    "id": "s09",
+    "nama": "Mie Kremes",
+    "harga": 1000,
+    "stok": 55,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Mie%20Kremes"
+  },
+  {
+    "id": "s09",
+    "nama": "Biskuit Better",
+    "harga": 2500,
+    "stok": 55,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Biskuit%20Better"
+  },
+  {
+    "id": "s09",
+    "nama": "Telur ayam / butir",
+    "harga": 2500,
+    "stok": 55,
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Telur%20ayam%20%2F%20butir"
+  },
+  {
+    "id": "s01",
+    "nama": "Malkist All",
+    "harga": 1500,
+    "stok": 30,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Malkist%20All"
+  },
+  {
+    "id": "s01",
+    "nama": "Sari Gandum",
+    "harga": 2500,
+    "stok": 16,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Sari%20Gandum"
+  },
+  {
+    "id": "s01",
+    "nama": "Super Bubur 49g",
+    "harga": 5000,
+    "stok": 2,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Super%20Bubur%2049g"
+  },
+  {
+    "id": "s01",
+    "nama": "Chocolatos stick ",
+    "harga": 1000,
+    "stok": 20,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Chocolatos%20stick%20"
+  },
+  {
+    "id": "s01",
+    "nama": "Kalpa",
+    "harga": 2500,
+    "stok": 20,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Kalpa"
+  },
+  {
+    "id": "s01",
+    "nama": "bon cabe ",
+    "harga": 500,
+    "stok": 10,
+    "kategori": "lain-lain",
+    "image": "https://via.placeholder.com/150x150?text=bon%20cabe%20"
+  },
+  {
+    "id": "s01",
+    "nama": "momogi",
+    "harga": 500,
+    "stok": 10,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=momogi"
+  },
+  {
+    "id": "s01",
+    "nama": "minyak jujur pouch",
+    "harga": 12000,
+    "stok": 3,
+    "kategori": "lain-lain",
+    "image": "https://via.placeholder.com/150x150?text=minyak%20jujur%20pouch"
+  },
+  {
+    "id": "k01",
+    "nama": "iso plus",
+    "harga": 3500,
+    "stok": 3,
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=iso%20plus"
+  },
+  {
     "id": "k01",
     "nama": "Daia 295 g",
     "harga": 5500,
     "stok": 20,
-    "kategori": "Kebersihan"
+    "kategori": "Kebersihan",
+    "image": "https://via.placeholder.com/150x150?text=Daia%20295%20g"
+  },
+  {
+    "id": "k01",
+    "nama": "Beng beng",
+    "harga": 2500,
+    "stok": 20,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Beng%20beng"
+  },
+  {
+    "id": "k01",
+    "nama": "nextar",
+    "harga": 2500,
+    "stok": 20,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=nextar"
+  },
+  {
+    "id": "k01",
+    "nama": "Brownies biskuit",
+    "harga": 2000,
+    "stok": 20,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Brownies%20biskuit"
+  },
+  {
+    "id": "k01",
+    "nama": "Dancow Coklat Kotak",
+    "harga": 7000,
+    "stok": 1,
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Dancow%20Coklat%20Kotak"
   },
   {
     "id": "k02",
     "nama": "Molto",
     "harga": 1000,
     "stok": 15,
-    "kategori": "Kebersihan"
-  },
-  {
-    "id": "s01",
-    "nama": "Malkist All",
-    "harga": 1000,
-    "stok": 30,
-    "kategori": "Makanan Ringan"
+    "kategori": "Kebersihan",
+    "image": "https://via.placeholder.com/150x150?text=Molto"
   },
   {
     "id": "s02",
     "nama": "Roti AOKA",
     "harga": 3500,
     "stok": 12,
-    "kategori": "Makanan Ringan"
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Roti%20AOKA"
   },
   {
     "id": "s03",
     "nama": "Ciki CHUBA",
     "harga": 1000,
     "stok": 50,
-    "kategori": "Makanan Ringan"
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Ciki%20CHUBA"
   },
   {
     "id": "s04",
     "nama": "CIKI boncabe",
     "harga": 2000,
     "stok": 25,
-    "kategori": "Makanan Ringan"
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=CIKI%20boncabe"
   },
   {
     "id": "s05",
     "nama": "OREO",
     "harga": 2500,
     "stok": 18,
-    "kategori": "Makanan Ringan"
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=OREO"
   },
   {
     "id": "s06",
     "nama": "Time Break",
     "harga": 1000,
     "stok": 40,
-    "kategori": "Makanan Ringan"
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Time%20Break"
   },
   {
     "id": "s07",
     "nama": "Sosis So Nice",
     "harga": 1500,
     "stok": 22,
-    "kategori": "Makanan Ringan"
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Sosis%20So%20Nice"
   },
   {
     "id": "s08",
     "nama": "Yupi All",
     "harga": 500,
     "stok": 60,
-    "kategori": "Makanan Ringan"
-  },
-  {
-    "id": "s09",
-    "nama": "Biskuit Gery All",
-    "harga": 500,
-    "stok": 55,
-    "kategori": "Makanan Ringan"
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Yupi%20All"
   },
   {
     "id": "m01",
     "nama": "Dancow All",
     "harga": 5000,
     "stok": 10,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Dancow%20All"
   },
   {
     "id": "m02",
-    "nama": "Air Mineral All",
+    "nama": "Air Mineral All crystalin",
     "harga": 3500,
     "stok": 45,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Air%20Mineral%20All%20crystalin"
   },
   {
     "id": "m03",
     "nama": "Susu UHT All",
     "harga": 6000,
     "stok": 8,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
   },
   {
     "id": "m04",
     "nama": "Frisian Flag Cokelat",
     "harga": 2000,
     "stok": 20,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Frisian%20Flag%20Cokelat"
   },
   {
     "id": "m05",
     "nama": "Energen",
     "harga": 2500,
     "stok": 16,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Energen"
   },
   {
     "id": "m06",
     "nama": "Cincau Panda",
     "harga": 7000,
     "stok": 5,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Cincau%20Panda"
   },
   {
     "id": "m07",
     "nama": "Teh Pucuk",
     "harga": 4000,
     "stok": 30,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Teh%20Pucuk"
   },
   {
     "id": "m08",
     "nama": "Teh Gelas",
     "harga": 3500,
     "stok": 35,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Teh%20Gelas"
   },
   {
     "id": "m09",
-    "nama": "Chocolator",
+    "nama": "Chocolatos all varian",
     "harga": 2500,
     "stok": 25,
-    "kategori": "Minuman"
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Chocolatos%20all%20varian"
   },
   {
     "id": "i01",
     "nama": "Indomie All",
     "harga": 3500,
     "stok": 50,
-    "kategori": "Mie Instan"
+    "kategori": "Mie Instan",
+    "image": "https://via.placeholder.com/150x150?text=Indomie%20All"
   },
   {
     "id": "i02",
     "nama": "Mie Sedap",
     "harga": 3500,
     "stok": 48,
-    "kategori": "Mie Instan"
+    "kategori": "Mie Instan",
+    "image": "https://via.placeholder.com/150x150?text=Mie%20Sedap"
   },
   {
     "id": "i03",
     "nama": "Pop mie Soto",
     "harga": 5500,
     "stok": 12,
-    "kategori": "Mie Instan"
+    "kategori": "Mie Instan",
+    "image": "https://via.placeholder.com/150x150?text=Pop%20mie%20Soto"
   },
   {
     "id": "i04",
     "nama": "Kari Ayam",
     "harga": 5500,
     "stok": 10,
-    "kategori": "Mie Instan"
+    "kategori": "Mie Instan",
+    "image": "https://via.placeholder.com/150x150?text=Kari%20Ayam"
   },
   {
     "id": "i05",
     "nama": "Ayam Bawang",
     "harga": 5500,
     "stok": 14,
-    "kategori": "Mie Instan"
+    "kategori": "Mie Instan",
+    "image": "https://via.placeholder.com/150x150?text=Ayam%20Bawang"
   },
   {
     "id": "i06",
     "nama": "Pop mie Jumbo Pangsit Jontor",
     "harga": 6500,
     "stok": 7,
-    "kategori": "Mie Instan"
+    "kategori": "Mie Instan",
+    "image": "https://via.placeholder.com/150x150?text=Pop%20mie%20Jumbo%20Pangsit%20Jontor"
   },
   {
     "id": "i07",
     "nama": "Pop mie Fiery Chicken",
     "harga": 6500,
     "stok": 6,
-    "kategori": "Mie Instan"
+    "kategori": "Mie Instan",
+    "image": "https://via.placeholder.com/150x150?text=Pop%20mie%20Fiery%20Chicken"
   },
   {
     "id": "l01",
     "nama": "CHARM X-TRA MAXI",
     "harga": 1000,
     "stok": 30,
-    "kategori": "Lain-Lain"
+    "kategori": "Lain-Lain",
+    "image": "https://via.placeholder.com/150x150?text=CHARM%20X-TRA%20MAXI"
   },
   {
     "id": "l02",
     "nama": "Mitu Baby",
     "harga": 3500,
     "stok": 8,
-    "kategori": "Lain-Lain"
+    "kategori": "Lain-Lain",
+    "image": "https://via.placeholder.com/150x150?text=Mitu%20Baby"
   },
   {
     "id": "l03",
     "nama": "Larrist Tisu",
     "harga": 3500,
     "stok": 12,
-    "kategori": "Lain-Lain"
+    "kategori": "Lain-Lain",
+    "image": "https://via.placeholder.com/150x150?text=Larrist%20Tisu"
   },
   {
     "id": "l04",
     "nama": "CHARM NIGHT 290",
     "harga": 3000,
     "stok": 15,
-    "kategori": "Lain-Lain"
+    "kategori": "Lain-Lain",
+    "image": "https://via.placeholder.com/150x150?text=CHARM%20NIGHT%20290"
   },
   {
     "id": "l05",
     "nama": "Sabun Cair Body",
     "harga": 5000,
     "stok": 9,
-    "kategori": "Lain-Lain"
+    "kategori": "Lain-Lain",
+    "image": "https://via.placeholder.com/150x150?text=Sabun%20Cair%20Body"
   },
   {
     "id": "l06",
     "nama": "Pepsodent 25g",
     "harga": 3000,
     "stok": 20,
-    "kategori": "Lain-Lain"
+    "kategori": "Lain-Lain",
+    "image": "https://via.placeholder.com/150x150?text=Pepsodent%2025g"
   },
   {
     "id": "b01",
     "nama": "Kobe Nasi Goreng",
     "harga": 2500,
     "stok": 25,
-    "kategori": "Bumbu & Masak"
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Kobe%20Nasi%20Goreng"
+  },
+  {
+    "id": "b01",
+    "nama": "Gula",
+    "harga": 1000,
+    "stok": 25,
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Gula"
   },
   {
     "id": "b02",
     "nama": "Tepung Serbaguna Indofood",
     "harga": 2500,
     "stok": 18,
-    "kategori": "Bumbu & Masak"
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Tepung%20Serbaguna%20Indofood"
   },
   {
     "id": "b03",
     "nama": "Minyak 230ml",
     "harga": 6000,
     "stok": 10,
-    "kategori": "Bumbu & Masak"
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Minyak%20230ml"
   },
   {
     "id": "b04",
     "nama": "Bumbu Racik Nasi Goreng",
     "harga": 2000,
     "stok": 22,
-    "kategori": "Bumbu & Masak"
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Bumbu%20Racik%20Nasi%20Goreng"
   },
   {
     "id": "b05",
     "nama": "Kecap Bango",
     "harga": 2500,
     "stok": 30,
-    "kategori": "Bumbu & Masak"
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Kecap%20Bango"
+  },
+  {
+    "id": "b05",
+    "nama": "Sambal ABC",
+    "harga": 1000,
+    "stok": 30,
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Sambal%20ABC"
+  },
+  {
+    "id": "b05",
+    "nama": "Kecap ABC",
+    "harga": 2000,
+    "stok": 30,
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Kecap%20ABC"
   },
   {
     "id": "b06",
     "nama": "Beras 1/2 Kg",
     "harga": 8500,
     "stok": 5,
-    "kategori": "Bumbu & Masak"
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Beras%201%2F2%20Kg"
   },
   {
     "id": "b07",
     "nama": "Saus ABC",
     "harga": 1000,
     "stok": 40,
-    "kategori": "Bumbu & Masak"
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Saus%20ABC"
   }
 ]
