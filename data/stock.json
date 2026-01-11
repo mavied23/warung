@@ -1,5 +1,37 @@
 [
   {
+    "id": "m03",
+    "nama": "Susu ultra 250ml",
+    "harga": 7500,
+    "stok": 8,
+    "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "s09",
+    "nama": "sarimi2",
+    "harga": 1500,
+    "stok": 55,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Biskuit%20Gery%20All"
+  },
+  {
+    "id": "s09",
+    "nama": "kobe bumbu nasi kuning",
+    "harga": 2000,
+    "stok": 55,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Biskuit%20Gery%20All"
+  },
+  {
+    "id": "s09",
+    "nama": "kobe bumbu nasi kuning",
+    "harga": 2000,
+    "stok": 55,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Biskuit%20Gery%20All"
+  },
+  {
     "id": "s09",
     "nama": "Biskuit Gery All",
     "harga": 1500,
@@ -233,7 +265,7 @@
   },
   {
     "id": "m03",
-    "nama": "Susu UHT All",
+    "nama": "Susu ultra 200",
     "harga": 6000,
     "stok": 8,
     "kategori": "Minuman",
