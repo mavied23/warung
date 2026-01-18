@@ -1,10 +1,58 @@
 [
   {
     "id": "m03",
+    "nama": "universal mooncake all varian",
+    "harga": 2500,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
+    "nama": "Chocolatos keju",
+    "harga": 1000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
     "nama": "Susu ultra 250ml",
     "harga": 7500,
     "stok": 8,
     "kategori": "Minuman",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
+    "nama": "roti sisir manis",
+    "harga": 3000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
+    "nama": "kobe bumbu nasi uduk",
+    "harga": 2000,
+    "stok": 8,
+    "kategori": "Bumbu & Masak",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
+    "nama": "sabun shinzu",
+    "harga": 5500,
+    "stok": 8,
+    "kategori": "Kebersihan",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
+    "nama": "sukro original",
+    "harga": 1500,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
     "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
   },
   {
