@@ -9,6 +9,14 @@
   },
   {
     "id": "m03",
+    "nama": "deka",
+    "harga": 2000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
     "nama": "Chocolatos keju",
     "harga": 1000,
     "stok": 8,
@@ -58,7 +66,7 @@
   {
     "id": "s09",
     "nama": "sarimi2",
-    "harga": 1500,
+    "harga": 4500,
     "stok": 55,
     "kategori": "Makanan Ringan",
     "image": "https://via.placeholder.com/150x150?text=Biskuit%20Gery%20All"
