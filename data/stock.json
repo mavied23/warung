@@ -9,6 +9,94 @@
   },
   {
     "id": "m03",
+    "nama": "Panadol biru 1 tablet",
+    "harga": 2000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
+    "nama": "oskadon 1 tablet",
+    "harga": 1000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Oskadon"
+  },
+  {
+    "id": "m03",
+    "nama": "prime bread all varian",
+    "harga": 3500,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Susu%20UHT%20All"
+  },
+  {
+    "id": "m03",
+    "nama": "lemonilo brownies",
+    "harga": 2000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Lomonilo%20Brownies"
+  },
+  {
+    "id": "m03",
+    "nama": "permen foxs",
+    "harga": 500,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Permen%20Foxs"
+  },
+  {
+    "id": "m03",
+    "nama": "nabati coklat",
+    "harga": 1000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Nabati%20Coklat"
+  },
+  {
+    "id": "m03",
+    "nama": "nabati keju",
+    "harga": 1000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Nabati%20Coklat"
+  },
+  {
+    "id": "m03",
+    "nama": "handsaplast",
+    "harga": 1000,
+    "stok": 8,
+    "kategori": "Kebersihan",
+    "image": "https://via.placeholder.com/150x150?text=Handsaplast"
+  },
+  {
+    "id": "m03",
+    "nama": "lotte choco pie",
+    "harga": 4000,
+    "stok": 8,
+    "kategori": "Makanan Ringan",
+    "image": "https://via.placeholder.com/150x150?text=Lotte%20Choco%20Pie"
+  },
+  {
+    "id": "m03",
+    "nama": "emeron",
+    "harga": 1000,
+    "stok": 8,
+    "kategori": "Kebersihan",
+    "image": "https://via.placeholder.com/150x150?text=Emeron"
+  },
+  {
+    "id": "m03",
+    "nama": "sunsilk",
+    "harga": 1000,
+    "stok": 8,
+    "kategori": "Kebersihan",
+    "image": "https://via.placeholder.com/150x150?text=Emeron"
+  },
+  {
+    "id": "m03",
     "nama": "deka",
     "harga": 2000,
     "stok": 8,
@@ -241,7 +329,7 @@
   },
   {
     "id": "k02",
-    "nama": "Molto",
+    "nama": "Molto All Varian",
     "harga": 1000,
     "stok": 15,
     "kategori": "Kebersihan",
