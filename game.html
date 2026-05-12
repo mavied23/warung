@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>🎮 Warung Rush • Kost Moluska</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #090912;
+      font-family: 'Nunito', sans-serif;
+      color: white;
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    #gameCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      display: block;
+    }
+
+    /* ===== BACK BUTTON ===== */
+    #backBtn {
+      position: fixed;
+      top: 14px; left: 14px;
+      z-index: 999;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 8px 14px;
+      color: rgba(255,255,255,0.55);
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    #backBtn:hover { background: rgba(255,255,255,0.14); color: white; }
+
+    /* ===== HUD ===== */
+    #hud {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 12px 16px 8px;
+      z-index: 100;
+      pointer-events: none;
+      display: none;
+    }
+    .hud-row1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .hud-score {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2rem;
+      color: #FFB347;
+      text-shadow: 0 0 14px rgba(255,179,71,0.55);
+      line-height: 1;
+    }
+    .hud-score small {
+      display: block;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+    .hud-lives {
+      font-size: 1.3rem;
+      letter-spacing: 3px;
+      text-shadow: 0 0 8px rgba(239,83,80,0.5);
+    }
+    .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hud-level {
+      background: rgba(255,107,53,0.18);
+      border: 1px solid rgba(255,107,53,0.45);
+      border-radius: 50px;
+      padding: 4px 14px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: #FF6B35;
+      letter-spacing: 1px;
+    }
+    .hud-pause-btn {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      cursor: pointer;
+      pointer-events: all;
+      transition: background 0.2s;
+      color: white;
+    }
+    .hud-pause-btn:hover { background: rgba(255,255,255,0.2); }
+
+    /* Target Banner */
+    #targetBanner {
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 7px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .target-label {
+      font-size: 0.62rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.4);
+      flex-shrink: 0;
+    }
+    .target-value {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.05rem;
+      flex: 1;
+      transition: color 0.4s;
+    }
+    .target-timer-wrap {
+      width: 70px; height: 5px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 3px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    #targetTimerFill {
+      height: 100%;
+      background: #FF6B35;
+      border-radius: 3px;
+      transition: width 0.1s linear, background 0.3s;
+    }
+
+    /* Combo Multiplier Badge */
+    #comboBar {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.8rem;
+      pointer-events: none;
+      z-index: 200;
+      opacity: 0;
+      text-align: center;
+      line-height: 1.1;
+      transition: opacity 0.35s ease;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    }
+
+    /* Power-up status bars */
+    #powerupStatus {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+      pointer-events: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .pu-chip {
+      background: rgba(0,0,0,0.65);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      padding: 5px 14px;
+      display: none;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .pu-chip.on { display: flex; }
+    .pu-track {
+      width: 55px; height: 4px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 2px;
+    }
+    .pu-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.1s linear;
+    }
+
+    /* ===== SCREENS ===== */
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 400;
+      padding: 20px;
+      text-align: center;
+    }
+    .screen.on { display: flex; }
+
+    /* MENU */
+    #menuScreen {
+      background: radial-gradient(ellipse at 50% 40%, #1c1130 0%, #090912 65%);
+    }
+    .game-logo {
+      font-family: 'Fredoka One', cursive;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .game-logo .line1 { font-size: 3.2rem; color: #FF6B35; text-shadow: 0 0 30px rgba(255,107,53,0.5); }
+    .game-logo .line2 { font-size: 2rem; color: #FFB347; }
+    .game-tagline {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 22px;
+    }
+    .hs-box {
+      background: rgba(255,179,71,0.08);
+      border: 1px solid rgba(255,179,71,0.3);
+      border-radius: 14px;
+      padding: 10px 30px;
+      margin-bottom: 16px;
+    }
+    .hs-box small {
+      display: block;
+      font-size: 0.62rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 2px;
+    }
+    .hs-box .hs-val {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.9rem;
+      color: #FFB347;
+    }
+
+    /* Leaderboard */
+    .lb-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 14px 20px;
+      margin-bottom: 18px;
+      min-width: 240px;
+      max-width: 310px;
+      width: 100%;
+    }
+    .lb-box h3 {
+      font-size: 0.62rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 10px;
+    }
+    .lb-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 0.85rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .lb-row:last-child { border-bottom: none; }
+    .lb-rank { width: 24px; font-weight: 900; font-size: 1rem; }
+    .lb-date { flex: 1; padding: 0 8px; color: rgba(255,255,255,0.5); font-weight: 700; font-size: 0.78rem; }
+    .lb-sc { font-weight: 900; color: #FFB347; font-family: 'Fredoka One', cursive; }
+    .lb-empty { color: rgba(255,255,255,0.22); font-size: 0.8rem; padding: 8px 0; }
+
+    /* Buttons */
+    .btn-play {
+      background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 52px;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.45rem;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(255,107,53,0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .btn-play:hover { transform: scale(1.06); box-shadow: 0 12px 36px rgba(255,107,53,0.65); }
+    .btn-play:active { transform: scale(0.97); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 12px;
+      padding: 11px 30px;
+      color: rgba(255,255,255,0.65);
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin: 4px;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.18); color: white; }
+    .hint-text {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.28);
+      max-width: 300px;
+      line-height: 1.7;
+      margin-top: 8px;
+    }
+
+    /* PAUSE */
+    #pauseScreen { background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); }
+    .pause-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.8rem;
+      color: white;
+      margin-bottom: 24px;
+    }
+
+    /* GAMEOVER */
+    #gameoverScreen { background: rgba(4,4,14,0.88); backdrop-filter: blur(12px); }
+    .go-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.5rem;
+      color: #FF6B35;
+      margin-bottom: 4px;
+    }
+    .new-rec {
+      display: none;
+      color: #FFB347;
+      font-size: 0.85rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      animation: blink 0.8s ease infinite;
+    }
+    .new-rec.show { display: block; }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+    .score-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px 32px;
+      margin: 14px 0;
+      min-width: 250px;
+    }
+    .sc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.88rem;
+    }
+    .sc-row:last-child { border-bottom: none; }
+    .sc-row .lbl { color: rgba(255,255,255,0.45); font-weight: 700; }
+    .sc-row .val { font-weight: 900; }
+    .sc-row.big .val {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      color: #FFB347;
+    }
+    .go-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+    /* HOW TO PLAY modal */
+    #howScreen { background: rgba(0,0,0,0.82); backdrop-filter: blur(8px); }
+    .how-box {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 24px 28px;
+      max-width: 360px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .how-box h3 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
+      color: #FF6B35;
+      margin-bottom: 12px;
+    }
+    .how-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.5;
+    }
+    .how-row .icon { font-size: 1.2rem; flex-shrink: 0; }
+
+    /* screen flash overlay */
+    #flashOverlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+<div id="flashOverlay"></div>
+
+<!-- Back button -->
+<button id="backBtn" onclick="confirmBack()">← Warung</button>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="hud-row1">
+    <div class="hud-score">
+      <small>SCORE</small>
+      <span id="scoreDisp">0</span>
+    </div>
+    <div class="hud-lives" id="livesDisp">❤️❤️❤️</div>
+    <div class="hud-right">
+      <div class="hud-level" id="levelDisp">LVL 1</div>
+      <button class="hud-pause-btn" onclick="togglePause()">⏸</button>
+    </div>
+  </div>
+  <div id="targetBanner">
+    <span class="target-label">Tangkap</span>
+    <span class="target-value" id="targetVal">Memuat…</span>
+    <div class="target-timer-wrap">
+      <div id="targetTimerFill" style="width:100%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Combo popup -->
+<div id="comboBar"></div>
+
+<!-- Power-up chips -->
+<div id="powerupStatus">
+  <div class="pu-chip" id="chipSlow">
+    ⚡ Slow Mo
+    <div class="pu-track"><div class="pu-fill" id="fillSlow" style="background:#42A5F5;width:100%"></div></div>
+  </div>
+  <div class="pu-chip" id="chipDouble">
+    🔥 3× Score
+    <div class="pu-track"><div class="pu-fill" id="fillDouble" style="background:#FF6B35;width:100%"></div></div>
+  </div>
+  <div class="pu-chip" id="chipShield">
+    🛡️ Shield: <span id="shieldCt">3</span>
+  </div>
+</div>
+
+<!-- ===== MENU SCREEN ===== -->
+<div class="screen on" id="menuScreen">
+  <div class="game-logo">
+    <div class="line1">WARUNG</div>
+    <div class="line2">RUSH! 🛒</div>
+  </div>
+  <div class="game-tagline">Kost Moluska Edition</div>
+
+  <div class="hs-box">
+    <small>🏆 High Score</small>
+    <div class="hs-val" id="menuHs">0</div>
+  </div>
+
+  <div class="lb-box">
+    <h3>🏅 Top 5 Leaderboard</h3>
+    <div id="lbList"><div class="lb-empty">Belum ada skor. Jadilah yang pertama!</div></div>
+  </div>
+
+  <button class="btn-play" onclick="startGame()">▶ MAIN SEKARANG</button>
+  <div style="display:flex;gap:8px;">
+    <button class="btn-secondary" onclick="showHow()">❓ Cara Main</button>
+    <button class="btn-secondary" onclick="clearLB()">🗑 Reset Skor</button>
+  </div>
+  <div class="hint-text">Tangkap barang sesuai misi! Klik / tap item yang benar.</div>
+</div>
+
+<!-- ===== HOW TO PLAY ===== -->
+<div class="screen" id="howScreen">
+  <div class="how-box">
+    <h3>📖 Cara Main</h3>
+    <div class="how-row"><span class="icon">🎯</span><span>Lihat banner misi di atas. Tangkap semua item yang sesuai kategori/nama!</span></div>
+    <div class="how-row"><span class="icon">👆</span><span>Klik atau tap item yang benar. Item yang salah = nyawa berkurang!</span></div>
+    <div class="how-row"><span class="icon">🔥</span><span>Tangkap beruntun untuk membangun COMBO. Semakin tinggi combo, skor makin berlipat!</span></div>
+    <div class="how-row"><span class="icon">⚡</span><span><b style="color:#42A5F5">Slow</b> – semua item melambat 5 detik</span></div>
+    <div class="how-row"><span class="icon">🔥</span><span><b style="color:#FF6B35">3× Score</b> – skor triple 8 detik</span></div>
+    <div class="how-row"><span class="icon">🛡️</span><span><b style="color:#66BB6A">Shield</b> – lindungi 3 kesalahan berikutnya</span></div>
+    <div class="how-row"><span class="icon">💣</span><span><b style="color:#EC407A">Bomb</b> – hancurkan semua item yang cocok sekarang!</span></div>
+    <div class="how-row"><span class="icon">❤️</span><span>Kamu punya 3 nyawa. Item target yang lolos = nyawa berkurang!</span></div>
+  </div>
+  <button class="btn-play" style="font-size:1.1rem;padding:12px 36px;" onclick="hideHow()">Siap Main! 💪</button>
+</div>
+
+<!-- ===== PAUSE SCREEN ===== -->
+<div class="screen" id="pauseScreen">
+  <div class="pause-title">⏸ Game Paused</div>
+  <button class="btn-play" style="margin-bottom:10px;" onclick="togglePause()">▶ Lanjutkan</button>
+  <button class="btn-secondary" onclick="goMenu()">🏠 Menu Utama</button>
+</div>
+
+<!-- ===== GAME OVER ===== -->
+<div class="screen" id="gameoverScreen">
+  <div class="go-title" id="goTitle">Game Over! 😭</div>
+  <div class="new-rec" id="newRec">🌟 REKOR BARU! 🌟</div>
+  <div class="score-card">
+    <div class="sc-row big"><span class="lbl">SKOR AKHIR</span><span class="val" id="goScore">0</span></div>
+    <div class="sc-row"><span class="lbl">Level dicapai</span><span class="val" id="goLevel">1</span></div>
+    <div class="sc-row"><span class="lbl">Combo terbaik</span><span class="val" id="goCombo">0</span></div>
+    <div class="sc-row"><span class="lbl">Item tertangkap</span><span class="val" id="goCaught">0</span></div>
+    <div class="sc-row"><span class="lbl">Akurasi</span><span class="val" id="goAcc">—</span></div>
+    <div class="sc-row"><span class="lbl">Power-up dipakai</span><span class="val" id="goPU">0</span></div>
+  </div>
+  <div class="go-btns">
+    <button class="btn-play" style="font-size:1.1rem;padding:12px 32px;" onclick="startGame()">🔄 Main Lagi</button>
+    <button class="btn-secondary" onclick="goMenu()">🏠 Menu</button>
+  </div>
+</div>
+
+<script>
+// =====================================================
+//  WARUNG RUSH - Full Game Engine
+//  Canvas-based arcade catching game
+// =====================================================
+
+const canvas = document.getElementById('gameCanvas');
+const ctx    = canvas.getContext('2d');
+
+// ---- RESIZE ----
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', () => { resize(); });
+resize();
+
+// =====================================================
+//  PRODUCT DATA  (loaded from stock.json, fallback if fail)
+// =====================================================
+let PRODUCTS = [
+  { id:'mi01', nama:'Indomie',      harga:3500, kategori:'Mie Instan' },
+  { id:'mi02', nama:'Mie Sedap',    harga:3500, kategori:'Mie Instan' },
+  { id:'mn01', nama:'Teh Pucuk',    harga:4000, kategori:'Minuman' },
+  { id:'mn02', nama:'Crystalin',    harga:3500, kategori:'Minuman' },
+  { id:'mk01', nama:'Oreo',         harga:2500, kategori:'Makanan Ringan' },
+  { id:'mk02', nama:'Beng Beng',    harga:2500, kategori:'Makanan Ringan' },
+  { id:'kb01', nama:'Daia 295g',    harga:5500, kategori:'Kebersihan' },
+  { id:'bm01', nama:'Kecap Bango',  harga:2500, kategori:'Bumbu & Masak' },
+  { id:'ll01', nama:'Panadol',      harga:2000, kategori:'Lain-Lain' },
+];
+
+async function loadProducts() {
+  try {
+    const r = await fetch('data/stock.json?' + Date.now());
+    if (r.ok) { const d = await r.json(); if (d.length) PRODUCTS = d; }
+  } catch(_) {}
+}
+
+// =====================================================
+//  CATEGORY CONFIG
+// =====================================================
+const CAT = {
+  'Mie Instan':     { color:'#FFEE58', glow:'rgba(255,238,88,.45)',  emoji:'🍜' },
+  'Minuman':        { color:'#42A5F5', glow:'rgba(66,165,245,.45)',  emoji:'💧' },
+  'Makanan Ringan': { color:'#FF7043', glow:'rgba(255,112,67,.45)',  emoji:'🍿' },
+  'Kebersihan':     { color:'#66BB6A', glow:'rgba(102,187,106,.45)', emoji:'🧼' },
+  'Bumbu & Masak':  { color:'#EC407A', glow:'rgba(236,64,122,.45)', emoji:'🍳' },
+  'Lain-Lain':      { color:'#AB47BC', glow:'rgba(171,71,188,.45)', emoji:'📦' },
+};
+const getCat = k => CAT[k] || { color:'#90A4AE', glow:'rgba(144,164,174,.4)', emoji:'📦' };
+
+// =====================================================
+//  GAME STATE
+// =====================================================
+let GS = 'MENU'; // MENU | PLAYING | PAUSED | GAMEOVER
+let score = 0, scoreDisp = 0, scoreTarget = 0;
+let level = 1, lives = 3;
+let combo = 0, maxCombo = 0, comboMult = 1;
+let totalCaught = 0, totalClicks = 0, totalPU = 0;
+
+let spawnTimer = 0, spawnRate = 2000;
+let targetTimer = 0, targetDuration = 11000;
+let puSpawnTimer = 0;
+let scoreForNextLevel = 200;
+
+let slowOn = false, slowTimer = 0, SLOW_DUR = 6000;
+let dblOn  = false, dblTimer  = 0, DBL_DUR  = 8000;
+let shield = 0;
+
+let shakeX = 0, shakeY = 0, shakeMag = 0;
+let currentTarget = null;
+
+const ITEMS    = [];
+const PARTS    = [];
+const FLOATS   = [];
+const POWERUPS = [];
+
+// Combo thresholds
+const COMBO_LVL = [
+  { min: 0,  mult: 1,  txt: '' },
+  { min: 4,  mult: 2,  txt: '🔥 x2 COMBO!' },
+  { min: 8,  mult: 3,  txt: '💥 x3 MANTAP!' },
+  { min: 14, mult: 5,  txt: '⚡ x5 GILA!' },
+  { min: 22, mult: 10, txt: '👑 x10 DEWA!' },
+];
+
+// Stars background
+const STARS = Array.from({ length: 90 }, () => ({
+  x: Math.random(), y: Math.random(),
+  r: Math.random() * 1.5 + 0.3,
+  phase: Math.random() * Math.PI * 2,
+  spd: Math.random() * 0.4 + 0.05,
+}));
+
+// Leaderboard
+let LB = JSON.parse(localStorage.getItem('wam_lb') || '[]');
+
+// =====================================================
+//  HELPER: ROUNDED RECT
+// =====================================================
+function rr(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+}
+
+// =====================================================
+//  FALLING ITEM CLASS
+// =====================================================
+class FallingItem {
+  constructor(forced) {
+    const pool = forced
+      ? PRODUCTS.filter(p => p.kategori === currentTarget?.value || p.id === currentTarget?.id)
+      : PRODUCTS;
+    const src = (pool.length && Math.random() < 0.6) ? pool : PRODUCTS;
+    this.p    = src[Math.floor(Math.random() * src.length)];
+    this.cfg  = getCat(this.p.kategori);
+    this.w    = 124;
+    this.h    = 60;
+    this.x    = 14 + Math.random() * (canvas.width - this.w - 28);
+    this.y    = -this.h - 10;
+    this.baseVy = 1.4 + level * 0.17;
+    this.wobPhase = Math.random() * Math.PI * 2;
+    this.rot  = (Math.random() - 0.5) * 0.07;
+    this.st   = 'fall'; // fall | caught | miss | wrong
+    this.at   = 0;      // anim timer
+    this.sc   = 1;      // scale
+    this.al   = 1;      // alpha
+    this.id   = Math.random();
+    this.shine = Math.random() * Math.PI * 2;
+  }
+
+  get vy()      { return this.baseVy * (slowOn ? 0.35 : 1); }
+  get cx()      { return this.x + this.w / 2; }
+  get cy()      { return this.y + this.h / 2; }
+  get bottom()  { return this.y + this.h; }
+
+  hit(px, py) {
+    return px >= this.x && px <= this.x + this.w &&
+           py >= this.y && py <= this.y + this.h;
+  }
+
+  matchTarget() {
+    if (!currentTarget) return false;
+    if (currentTarget.type === 'cat')  return this.p.kategori === currentTarget.val;
+    if (currentTarget.type === 'item') return this.p.id === currentTarget.id;
+    return false;
+  }
+
+  update(dt) {
+    this.wobPhase += 0.025;
+    this.shine += 0.03;
+    if (this.st === 'fall') {
+      this.y += this.vy;
+      this.x += Math.sin(this.wobPhase) * 0.35;
+      this.x  = Math.max(0, Math.min(canvas.width - this.w, this.x));
+    } else {
+      this.at += dt;
+      if (this.st === 'caught') {
+        this.sc  = 1 + Math.sin(this.at * 0.028) * 0.18;
+        this.al  = Math.max(0, 1 - this.at / 420);
+        this.y  -= 2.2;
+      } else {
+        this.al  = Math.max(0, 1 - this.at / 300);
+        this.y  += 3;
+      }
+    }
+  }
+
+  draw() {
+    if (this.al <= 0.01) return;
+    ctx.save();
+    ctx.globalAlpha = this.al;
+    ctx.translate(this.cx, this.cy);
+    ctx.rotate(this.rot + (this.st === 'fall' ? Math.sin(this.wobPhase) * 0.018 : 0));
+    ctx.scale(this.sc, this.sc);
+
+    const x = -this.w / 2, y = -this.h / 2;
+
+    // Glow
+    ctx.shadowColor = this.cfg.glow;
+    ctx.shadowBlur  = this.st === 'caught' ? 22 : 10;
+
+    // Body gradient
+    const g = ctx.createLinearGradient(x, y, x, y + this.h);
+    g.addColorStop(0, this.cfg.color + 'cc');
+    g.addColorStop(1, this.cfg.color + '77');
+    ctx.fillStyle = g;
+    rr(ctx, x, y, this.w, this.h, 11);
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = this.cfg.color + 'cc';
+    ctx.lineWidth = 1.8;
+    ctx.stroke();
+
+    // Top shine strip
+    const sh = ctx.createLinearGradient(x, y, x, y + this.h * 0.45);
+    sh.addColorStop(0, 'rgba(255,255,255,0.22)');
+    sh.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = sh;
+    rr(ctx, x, y, this.w, this.h * 0.45, 11);
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+    // Emoji
+    ctx.font = '19px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(this.cfg.emoji, x + 18, y + this.h / 2);
+
+    // Product name
+    ctx.fillStyle = 'rgba(255,255,255,0.97)';
+    ctx.font = '700 11px Nunito, sans-serif';
+    ctx.textAlign = 'center';
+    const name = this.p.nama.length > 14 ? this.p.nama.slice(0, 13) + '…' : this.p.nama;
+    ctx.fillText(name, x + this.w / 2 + 7, y + this.h / 2 - 8);
+
+    // Price
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = '600 9px Nunito, sans-serif';
+    ctx.fillText('Rp ' + this.p.harga.toLocaleString('id-ID'), x + this.w / 2 + 7, y + this.h / 2 + 8);
+
+    ctx.restore();
+  }
+}
+
+// =====================================================
+//  POWER-UP CLASS
+// =====================================================
+const PU_CFG = {
+  slow:   { emoji:'⚡', color:'#42A5F5', name:'SLOW' },
+  double: { emoji:'🔥', color:'#FF6B35', name:'3×' },
+  shield: { emoji:'🛡️', color:'#66BB6A', name:'SHIELD' },
+  bomb:   { emoji:'💣', color:'#EC407A', name:'BOOM!' },
+};
+
+class PowerUp {
+  constructor() {
+    const keys = Object.keys(PU_CFG);
+    this.type  = keys[Math.floor(Math.random() * keys.length)];
+    this.cfg   = PU_CFG[this.type];
+    this.r     = 26;
+    this.x     = 40 + Math.random() * (canvas.width - 80);
+    this.y     = -60;
+    this.vy    = 1.5;
+    this.phase = Math.random() * Math.PI * 2;
+    this.pulse = 0;
+    this.al    = 1;
+    this.st    = 'fall';
+    this.at    = 0;
+    this.id    = Math.random();
+  }
+
+  get bottom() { return this.y + this.r + 18; }
+
+  hit(px, py) {
+    return (px - this.x) ** 2 + (py - this.y) ** 2 <= (this.r + 12) ** 2;
+  }
+
+  update(dt) {
+    this.phase += 0.045;
+    this.pulse += 0.07;
+    if (this.st === 'fall') {
+      this.y += this.vy;
+      this.x += Math.sin(this.phase) * 1;
+    } else {
+      this.at += dt;
+      this.al  = Math.max(0, 1 - this.at / 380);
+    }
+  }
+
+  draw() {
+    if (this.al <= 0.01) return;
+    ctx.save();
+    ctx.globalAlpha = this.al;
+    ctx.translate(this.x, this.y);
+
+    const glowPulse = 14 + Math.sin(this.pulse) * 8;
+    ctx.shadowColor = this.cfg.color;
+    ctx.shadowBlur  = glowPulse;
+
+    // Outer ring pulse
+    ctx.beginPath();
+    ctx.arc(0, 0, this.r + 6 + Math.sin(this.pulse) * 3, 0, Math.PI * 2);
+    ctx.strokeStyle = this.cfg.color + '55';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Body
+    ctx.beginPath();
+    ctx.arc(0, 0, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = this.cfg.color + '33';
+    ctx.fill();
+    ctx.strokeStyle = this.cfg.color;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    ctx.shadowBlur = 0;
+
+    // Emoji
+    ctx.font = '20px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(this.cfg.emoji, 0, 0);
+
+    // Label
+    ctx.font = '700 8px Nunito';
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.fillText(this.cfg.name, 0, this.r + 12);
+
+    ctx.restore();
+  }
+}
+
+// =====================================================
+//  PARTICLE CLASS
+// =====================================================
+class Particle {
+  constructor(x, y, color) {
+    this.x = x; this.y = y;
+    this.vx = (Math.random() - 0.5) * 9;
+    this.vy = (Math.random() - 0.65) * 9;
+    this.color = color;
+    this.r     = Math.random() * 5 + 2;
+    this.life  = 1;
+    this.decay = 0.022 + Math.random() * 0.018;
+    this.shape = Math.random() > 0.5 ? 'rect' : 'circle';
+    this.angle = Math.random() * Math.PI * 2;
+    this.spin  = (Math.random() - 0.5) * 0.2;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    this.vy += 0.18; this.vx *= 0.97;
+    this.life -= this.decay;
+    this.angle += this.spin;
+  }
+  draw() {
+    if (this.life <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, this.life);
+    ctx.fillStyle   = this.color;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur  = 5;
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    if (this.shape === 'rect') {
+      ctx.fillRect(-this.r, -this.r / 2, this.r * 2, this.r);
+    } else {
+      ctx.beginPath();
+      ctx.arc(0, 0, this.r / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+// =====================================================
+//  FLOATING TEXT CLASS
+// =====================================================
+class FloatText {
+  constructor(x, y, text, color, size = 19) {
+    this.x = x; this.y = y;
+    this.text = text; this.color = color; this.size = size;
+    this.vy = -2.6; this.life = 1;
+    this.decay = 0.016;
+  }
+  update() { this.y += this.vy; this.vy *= 0.95; this.life -= this.decay; }
+  draw() {
+    if (this.life <= 0) return;
+    ctx.save();
+    ctx.globalAlpha  = Math.max(0, this.life);
+    ctx.font         = `900 ${this.size}px Nunito, sans-serif`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.strokeStyle  = 'rgba(0,0,0,0.75)';
+    ctx.lineWidth    = 3.5;
+    ctx.strokeText(this.text, this.x, this.y);
+    ctx.fillStyle = this.color;
+    ctx.fillText(this.text, this.x, this.y);
+    ctx.restore();
+  }
+}
+
+// =====================================================
+//  PARTICLE BURST
+// =====================================================
+function burst(x, y, color, n = 14) {
+  for (let i = 0; i < n; i++) PARTS.push(new Particle(x, y, color));
+}
+function floatTxt(x, y, t, c, sz) { FLOATS.push(new FloatText(x, y, t, c, sz)); }
+
+// =====================================================
+//  SCREEN SHAKE
+// =====================================================
+function shake(mag) { shakeMag = Math.max(shakeMag, mag); }
+
+// =====================================================
+//  SCREEN FLASH
+// =====================================================
+function flash(color) {
+  const ov = document.getElementById('flashOverlay');
+  ov.style.background = color;
+  ov.style.transition = 'none';
+  ov.style.opacity = '1';
+  requestAnimationFrame(() => {
+    ov.style.transition = 'opacity 0.35s ease';
+    ov.style.opacity = '0';
+  });
+}
+
+// =====================================================
+//  TARGET SYSTEM
+// =====================================================
+function newTarget() {
+  const cats = [...new Set(PRODUCTS.map(p => p.kategori))].filter(Boolean);
+  targetTimer = 0;
+
+  if (Math.random() < 0.65) {
+    // Category target
+    const cat = cats[Math.floor(Math.random() * cats.length)];
+    currentTarget = { type: 'cat', val: cat };
+    const cfg = getCat(cat);
+    document.getElementById('targetVal').textContent  = `${cfg.emoji} Semua ${cat}`;
+    document.getElementById('targetVal').style.color  = cfg.color;
+    document.getElementById('targetTimerFill').style.background = cfg.color;
+  } else {
+    // Specific item target
+    const p = PRODUCTS[Math.floor(Math.random() * PRODUCTS.length)];
+    currentTarget = { type: 'item', val: p.nama, id: p.id };
+    document.getElementById('targetVal').textContent  = `🔍 Cari: ${p.nama}`;
+    document.getElementById('targetVal').style.color  = '#FFB347';
+    document.getElementById('targetTimerFill').style.background = '#FFB347';
+  }
+}
+
+function matchTarget(item) {
+  if (!currentTarget) return false;
+  if (currentTarget.type === 'cat')  return item.p.kategori === currentTarget.val;
+  if (currentTarget.type === 'item') return item.p.id === currentTarget.id || item.p.nama === currentTarget.val;
+  return false;
+}
+
+// =====================================================
+//  COMBO SYSTEM
+// =====================================================
+let comboAnimTO = null;
+
+function updateCombo(hit) {
+  if (hit) {
+    combo++;
+    maxCombo = Math.max(maxCombo, combo);
+    const lv = [...COMBO_LVL].reverse().find(c => combo >= c.min) || COMBO_LVL[0];
+    comboMult = lv.mult;
+    if (lv.txt && combo % 4 === 0) showComboPop(lv.txt, lv.mult);
+  } else {
+    combo = 0; comboMult = 1;
+  }
+}
+
+function showComboPop(txt, mult) {
+  const el = document.getElementById('comboBar');
+  el.innerHTML = `<div>${txt}</div><div style="font-size:1.4rem;opacity:0.7">${mult}× multiplier</div>`;
+  el.style.opacity = '1';
+  el.style.transform = 'translate(-50%,-50%) scale(1.25)';
+  if (comboAnimTO) clearTimeout(comboAnimTO);
+  comboAnimTO = setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transform = 'translate(-50%,-50%) scale(1)';
+  }, 1300);
+}
+
+// =====================================================
+//  CATCH / MISS / WRONG
+// =====================================================
+function catchItem(item, silent) {
+  item.st = 'caught';
+  totalCaught++;
+  const pts = 10 * comboMult * (dblOn ? 3 : 1);
+  score += pts;
+  scoreTarget = score;
+  updateCombo(true);
+  if (!silent) {
+    burst(item.cx, item.cy, item.cfg.color, 16);
+    const label = comboMult > 1 ? `+${pts} ×${comboMult}` : `+${pts}`;
+    floatTxt(item.cx, item.cy - 18, label, '#FFB347', comboMult > 1 ? 22 : 17);
+    if (comboMult >= 5) flash('rgba(255,179,71,0.12)');
+  }
+}
+
+function missItem(item) {
+  if (useShield()) {
+    item.st = 'miss';
+    floatTxt(item.cx, item.cy, '🛡️ Blocked', '#66BB6A', 14);
+    return;
+  }
+  item.st = 'miss';
+  loseLife();
+  burst(item.cx, item.cy, '#ef5350', 8);
+  floatTxt(item.cx, item.cy, 'MISS! -❤️', '#ef5350', 15);
+  shake(6); updateCombo(false);
+}
+
+function wrongTap(item) {
+  if (useShield()) {
+    item.st = 'wrong';
+    floatTxt(item.cx, item.cy, '🛡️ Blocked', '#66BB6A', 14);
+    return;
+  }
+  item.st = 'wrong';
+  loseLife();
+  burst(item.cx, item.cy, '#ef5350', 6);
+  floatTxt(item.cx, item.cy, 'SALAH! -❤️', '#ef5350', 15);
+  shake(9); flash('rgba(239,83,80,0.18)'); updateCombo(false);
+}
+
+function useShield() {
+  if (shield <= 0) return false;
+  shield--;
+  document.getElementById('shieldCt').textContent = shield;
+  if (shield === 0) document.getElementById('chipShield').classList.remove('on');
+  return true;
+}
+
+function loseLife() {
+  lives = Math.max(0, lives - 1);
+  updateLivesUI();
+  if (lives <= 0) endGame();
+}
+
+function updateLivesUI() {
+  document.getElementById('livesDisp').textContent =
+    '❤️'.repeat(lives) + '🖤'.repeat(Math.max(0, 3 - lives));
+}
+
+// =====================================================
+//  POWER-UPS
+// =====================================================
+function applyPU(type) {
+  totalPU++;
+  flash('rgba(255,255,255,0.25)');
+  if (type === 'slow') {
+    slowOn = true; slowTimer = SLOW_DUR;
+    document.getElementById('chipSlow').classList.add('on');
+    floatTxt(canvas.width / 2, canvas.height / 2, '⚡ SLOW MO!', '#42A5F5', 27);
+  } else if (type === 'double') {
+    dblOn = true; dblTimer = DBL_DUR;
+    document.getElementById('chipDouble').classList.add('on');
+    floatTxt(canvas.width / 2, canvas.height / 2, '🔥 3× SCORE!', '#FF6B35', 27);
+  } else if (type === 'shield') {
+    shield = 3;
+    document.getElementById('chipShield').classList.add('on');
+    document.getElementById('shieldCt').textContent = 3;
+    floatTxt(canvas.width / 2, canvas.height / 2, '🛡️ SHIELD x3!', '#66BB6A', 27);
+  } else if (type === 'bomb') {
+    floatTxt(canvas.width / 2, canvas.height / 2, '💣 BOOM!', '#EC407A', 30);
+    flash('rgba(236,64,122,0.35)');
+    shake(5);
+    ITEMS.forEach(item => {
+      if (item.st === 'fall' && matchTarget(item)) catchItem(item, true);
+    });
+  }
+}
+
+function tickPU(dt) {
+  if (slowOn) {
+    slowTimer -= dt;
+    document.getElementById('fillSlow').style.width = Math.max(0, slowTimer / SLOW_DUR * 100) + '%';
+    if (slowTimer <= 0) { slowOn = false; document.getElementById('chipSlow').classList.remove('on'); }
+  }
+  if (dblOn) {
+    dblTimer -= dt;
+    document.getElementById('fillDouble').style.width = Math.max(0, dblTimer / DBL_DUR * 100) + '%';
+    if (dblTimer <= 0) { dblOn = false; document.getElementById('chipDouble').classList.remove('on'); }
+  }
+}
+
+// =====================================================
+//  SPAWN
+// =====================================================
+function spawnItem() {
+  const maxFalling = Math.min(2 + Math.floor(level * 0.6), 9);
+  if (ITEMS.filter(i => i.st === 'fall').length >= maxFalling) return;
+  ITEMS.push(new FallingItem(true));
+}
+
+function spawnPU() { POWERUPS.push(new PowerUp()); }
+
+// =====================================================
+//  LEVEL UP
+// =====================================================
+function checkLevel() {
+  if (score < scoreForNextLevel) return;
+  level++;
+  scoreForNextLevel = Math.round(scoreForNextLevel * 1.65);
+  spawnRate     = Math.max(650, spawnRate - 120);
+  targetDuration = Math.max(6000, targetDuration - 400);
+  floatTxt(canvas.width / 2, canvas.height / 3, `🎯 LEVEL ${level}!`, '#FFB347', 30);
+  flash('rgba(255,179,71,0.14)');
+  shake(4);
+  document.getElementById('levelDisp').textContent = `LVL ${level}`;
+  newTarget();
+}
+
+// =====================================================
+//  TAP HANDLER
+// =====================================================
+function handleTap(px, py) {
+  if (GS !== 'PLAYING') return;
+  totalClicks++;
+
+  // Power-ups first
+  for (let i = POWERUPS.length - 1; i >= 0; i--) {
+    const pu = POWERUPS[i];
+    if (pu.st === 'fall' && pu.hit(px, py)) {
+      pu.st = 'caught';
+      burst(pu.x, pu.y, pu.cfg.color, 12);
+      applyPU(pu.type);
+      return;
+    }
+  }
+
+  // Items
+  let hit = false;
+  for (let i = ITEMS.length - 1; i >= 0; i--) {
+    const item = ITEMS[i];
+    if (item.st !== 'fall') continue;
+    if (item.hit(px, py)) {
+      hit = true;
+      if (matchTarget(item)) catchItem(item, false);
+      else wrongTap(item);
+      break;
+    }
+  }
+  // Tap on empty = no penalty (just miss)
+}
+
+canvas.addEventListener('click', e => {
+  const rc = canvas.getBoundingClientRect();
+  handleTap(e.clientX - rc.left, e.clientY - rc.top);
+});
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  const rc = canvas.getBoundingClientRect();
+  const t  = e.changedTouches[0];
+  handleTap(t.clientX - rc.left, t.clientY - rc.top);
+}, { passive: false });
+
+// =====================================================
+//  DRAW BACKGROUND
+// =====================================================
+function drawBG() {
+  const g = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  g.addColorStop(0, '#09090f');
+  g.addColorStop(1, '#13101e');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Stars
+  STARS.forEach(s => {
+    s.phase += s.spd * 0.012;
+    const a = 0.25 + Math.sin(s.phase) * 0.25;
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = '#fff';
+    ctx.shadowBlur = 3;
+    ctx.beginPath();
+    ctx.arc(s.x * canvas.width, s.y * canvas.height, s.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Bottom glow bar
+  const bar = ctx.createLinearGradient(0, canvas.height - 55, 0, canvas.height);
+  bar.addColorStop(0, 'rgba(255,107,53,0)');
+  bar.addColorStop(1, 'rgba(255,107,53,0.1)');
+  ctx.fillStyle = bar;
+  ctx.fillRect(0, canvas.height - 55, canvas.width, 55);
+
+  // Dashed lane lines
+  ctx.save();
+  ctx.setLineDash([7, 22]);
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  [1 / 3, 2 / 3].forEach(f => {
+    ctx.beginPath();
+    ctx.moveTo(canvas.width * f, 0);
+    ctx.lineTo(canvas.width * f, canvas.height);
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+// =====================================================
+//  GAME LOOP
+// =====================================================
+let lastTs = 0;
+
+function loop(ts) {
+  requestAnimationFrame(loop);
+  const dt = Math.min(ts - lastTs, 80);
+  lastTs = ts;
+
+  // Shake
+  if (shakeMag > 0.3) {
+    shakeX = (Math.random() - 0.5) * shakeMag;
+    shakeY = (Math.random() - 0.5) * shakeMag;
+    shakeMag *= 0.80;
+  } else { shakeX = 0; shakeY = 0; }
+
+  ctx.save();
+  ctx.translate(shakeX, shakeY);
+  drawBG();
+
+  if (GS === 'PLAYING') {
+    // Spawn timers
+    spawnTimer += dt;
+    if (spawnTimer >= spawnRate) { spawnTimer = 0; spawnItem(); }
+
+    const puRate = Math.max(10000, 22000 - level * 900);
+    puSpawnTimer += dt;
+    if (puSpawnTimer >= puRate) { puSpawnTimer = 0; spawnPU(); }
+
+    // Target timer
+    targetTimer += dt;
+    const timerPct = Math.max(0, 1 - targetTimer / targetDuration);
+    document.getElementById('targetTimerFill').style.width = (timerPct * 100) + '%';
+    if (timerPct < 0.25) document.getElementById('targetTimerFill').style.background = '#ef5350';
+    if (targetTimer >= targetDuration) newTarget();
+
+    // Power-up timers
+    tickPU(dt);
+
+    // Update
+    ITEMS.forEach(i => i.update(dt));
+    POWERUPS.forEach(p => p.update(dt));
+    PARTS.forEach(p => p.update());
+    FLOATS.forEach(f => f.update());
+
+    // Miss check: target item fell off screen
+    ITEMS.forEach(item => {
+      if (item.st === 'fall' && item.y > canvas.height + 15) {
+        if (matchTarget(item)) missItem(item);
+        else item.st = 'miss';
+      }
+    });
+    POWERUPS.forEach(pu => {
+      if (pu.st === 'fall' && pu.y > canvas.height + 20) pu.st = 'missed';
+    });
+
+    // Draw
+    PARTS.forEach(p => p.draw());
+    POWERUPS.forEach(p => p.draw());
+    ITEMS.forEach(i => i.draw());
+    FLOATS.forEach(f => f.draw());
+
+    // Smooth score
+    scoreDisp += (scoreTarget - scoreDisp) * 0.14;
+    document.getElementById('scoreDisp').textContent =
+      Math.floor(scoreDisp).toLocaleString('id-ID');
+
+    // Level check
+    checkLevel();
+
+    // Cleanup
+    for (let i = ITEMS.length - 1; i >= 0; i--)
+      if (ITEMS[i].st !== 'fall' && ITEMS[i].al <= 0.01) ITEMS.splice(i, 1);
+    for (let i = POWERUPS.length - 1; i >= 0; i--)
+      if (POWERUPS[i].st !== 'fall' && POWERUPS[i].al <= 0.01) POWERUPS.splice(i, 1);
+    for (let i = PARTS.length - 1; i >= 0; i--)
+      if (PARTS[i].life <= 0) PARTS.splice(i, 1);
+    for (let i = FLOATS.length - 1; i >= 0; i--)
+      if (FLOATS[i].life <= 0) FLOATS.splice(i, 1);
+  }
+
+  ctx.restore();
+}
+
+// =====================================================
+//  GAME CONTROLS
+// =====================================================
+function startGame() {
+  score = 0; scoreDisp = 0; scoreTarget = 0;
+  level = 1; lives = 3;
+  combo = 0; maxCombo = 0; comboMult = 1;
+  totalCaught = 0; totalClicks = 0; totalPU = 0;
+  spawnTimer = 0; spawnRate = 2000;
+  targetTimer = 0; targetDuration = 11000;
+  puSpawnTimer = 0; scoreForNextLevel = 200;
+  slowOn = false; dblOn = false; shield = 0;
+  slowTimer = 0; dblTimer = 0;
+  shakeMag = 0; shakeX = 0; shakeY = 0;
+  ITEMS.length = 0; PARTS.length = 0;
+  FLOATS.length = 0; POWERUPS.length = 0;
+
+  ['chipSlow','chipDouble','chipShield'].forEach(id =>
+    document.getElementById(id).classList.remove('on'));
+  document.getElementById('levelDisp').textContent  = 'LVL 1';
+  document.getElementById('scoreDisp').textContent  = '0';
+  document.getElementById('comboBar').style.opacity = '0';
+  updateLivesUI();
+
+  GS = 'PLAYING';
+  setScreen(null);
+  document.getElementById('hud').style.display  = 'block';
+  document.getElementById('backBtn').style.display = 'none';
+  newTarget();
+}
+
+function togglePause() {
+  if (GS === 'PLAYING') {
+    GS = 'PAUSED';
+    setScreen('pauseScreen');
+  } else if (GS === 'PAUSED') {
+    GS = 'PLAYING';
+    setScreen(null);
+  }
+}
+
+function goMenu() {
+  GS = 'MENU';
+  document.getElementById('hud').style.display     = 'none';
+  document.getElementById('backBtn').style.display = 'flex';
+  ITEMS.length = 0; PARTS.length = 0;
+  FLOATS.length = 0; POWERUPS.length = 0;
+  renderLB();
+  setScreen('menuScreen');
+}
+
+function endGame() {
+  GS = 'GAMEOVER';
+  document.getElementById('hud').style.display     = 'none';
+  document.getElementById('backBtn').style.display = 'flex';
+
+  const acc = totalClicks > 0 ? Math.round(totalCaught / totalClicks * 100) : 0;
+  document.getElementById('goScore').textContent  = score.toLocaleString('id-ID');
+  document.getElementById('goLevel').textContent  = level;
+  document.getElementById('goCombo').textContent  = maxCombo;
+  document.getElementById('goCaught').textContent = totalCaught;
+  document.getElementById('goAcc').textContent    = acc + '%';
+  document.getElementById('goPU').textContent     = totalPU;
+
+  const prevHs = parseInt(localStorage.getItem('wam_hs') || '0');
+  const isNew  = score > prevHs;
+  if (isNew) localStorage.setItem('wam_hs', score);
+  document.getElementById('newRec').classList.toggle('show', isNew);
+
+  const titles = ['Game Over! 😭','Aduh nyawamu habis! 🙈','Hampir! Coba lagi! 💪','Stok nyawa habis! 😤','Warung tutup deh! 🔒'];
+  document.getElementById('goTitle').textContent = titles[Math.floor(Math.random() * titles.length)];
+
+  const today = new Date().toLocaleDateString('id-ID', { day:'2-digit', month:'short' });
+  LB.push({ score, date: today, lvl: level });
+  LB.sort((a, b) => b.score - a.score);
+  LB = LB.slice(0, 5);
+  localStorage.setItem('wam_lb', JSON.stringify(LB));
+
+  renderLB();
+  setScreen('gameoverScreen');
+}
+
+function confirmBack() {
+  if (GS === 'PLAYING' || GS === 'PAUSED') {
+    if (confirm('Keluar dari game? Progress akan hilang.')) {
+      window.location.href = 'index.html';
+    }
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+// =====================================================
+//  SCREENS
+// =====================================================
+function setScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  if (id) document.getElementById(id)?.classList.add('on');
+}
+function showHow()  { setScreen('howScreen'); }
+function hideHow()  { setScreen('menuScreen'); }
+
+function renderLB() {
+  const hs = parseInt(localStorage.getItem('wam_hs') || '0');
+  document.getElementById('menuHs').textContent = hs.toLocaleString('id-ID');
+  const el = document.getElementById('lbList');
+  if (!LB.length) {
+    el.innerHTML = '<div class="lb-empty">Belum ada skor. Jadilah yang pertama!</div>';
+    return;
+  }
+  el.innerHTML = LB.map((e, i) => {
+    const medals = ['🥇','🥈','🥉'];
+    return `<div class="lb-row">
+      <span class="lb-rank">${medals[i] || (i+1) + '.'}</span>
+      <span class="lb-date">${e.date || '—'} · Lv.${e.lvl || '?'}</span>
+      <span class="lb-sc">${e.score.toLocaleString('id-ID')}</span>
+    </div>`;
+  }).join('');
+}
+
+function clearLB() {
+  if (!confirm('Reset semua leaderboard?')) return;
+  LB = []; localStorage.removeItem('wam_lb'); localStorage.removeItem('wam_hs');
+  renderLB();
+}
+
+// =====================================================
+//  INIT
+// =====================================================
+async function init() {
+  await loadProducts();
+  renderLB();
+  requestAnimationFrame(loop);
+}
+init();
+</script>
+</body>
+</html>
