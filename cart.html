@@ -3,159 +3,246 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Keranjang • WARUNG AMANAH MANDIRI</title>
+  <title>Keranjang • Warung Amanah Mandiri</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🛒</text></svg>">
 </head>
 <body>
+
+  <div class="bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+  </div>
+  <div class="noise"></div>
+  <div class="cursor"></div>
+  <div class="cursor-ring"></div>
+  <canvas id="confetti-canvas"></canvas>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ===== HEADER ===== -->
   <header>
-    <div class="header-content">
-      <h1>🛒 Keranjang Belanja</h1>
+    <div class="header-inner">
+      <div class="logo-block">
+        <h1>WARUNG AMANAH<span>.</span></h1>
+        <small>Kost Moluska • Self Service</small>
+      </div>
+      <div class="header-right">
+        <button class="btn-toggle" id="themeToggle" title="Ganti tema">🌕</button>
+      </div>
     </div>
   </header>
 
+  <!-- ===== MAIN ===== -->
   <main class="container">
-    <div id="cartContent">
-      <!-- Diisi oleh JS -->
+
+    <div class="cart-page-header">🛒 Keranjang <span>Belanja</span></div>
+    <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:24px;font-weight:600;">
+      Pastikan pesananmu sudah sesuai sebelum ambil barang ya!
+    </p>
+
+    <!-- Cart Content -->
+    <div id="cartContent"></div>
+
+    <!-- Actions -->
+    <div class="cart-actions" id="cartActions" style="display:none;">
+      <a href="index.html" class="btn-back">← Kembali Belanja</a>
+      <button class="btn-clear" onclick="clearCartPage()">🗑 Hapus Semua</button>
+      <button class="btn-checkout" onclick="doCheckout()">✅ Selesai Belanja</button>
     </div>
 
-    <div class="cart-actions">
-      <a href="index.html" class="btn-secondary">← Kembali ke Toko</a>
-      <button class="btn-clear" onclick="clearCart()">Hapus Semua</button>
-    </div>
   </main>
 
+  <!-- Checkout Success Modal -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-box" style="text-align:center;">
+      <div style="font-size:3rem;margin-bottom:12px;">🎉</div>
+      <h2 style="margin-bottom:8px;">Makasih udah belanja!</h2>
+      <p style="margin-bottom:20px;">
+        Ambil barangnya, bayar di kotak amanah ya. Uang pas lebih dihargai! 🙏
+      </p>
+      <div style="background:var(--bg2);border-radius:10px;padding:16px;margin-bottom:20px;text-align:left;">
+        <p style="font-size:0.88rem;font-weight:700;color:var(--text);padding:4px 0;">
+          ✅ Ambil barang sesuai jumlah di daftar
+        </p>
+        <p style="font-size:0.88rem;font-weight:700;color:var(--text);padding:4px 0;">
+          ✅ Bayar tunai di kotak kiri / QRIS di kotak kanan
+        </p>
+        <p style="font-size:0.88rem;font-weight:700;color:var(--text);padding:4px 0;">
+          ✅ Uang pas sangat dihargai, makasih!
+        </p>
+      </div>
+      <button class="btn-checkout" onclick="finishCheckout()" style="width:100%;">
+        Oke, mengerti! 👍
+      </button>
+    </div>
+  </div>
+
   <script>
-  // Mode toggle untuk cart.html
-  document.addEventListener('DOMContentLoaded', () => {
-    const savedMode = localStorage.getItem('theme') || 'light';
-    if (savedMode === 'light') {
-      document.body.classList.add('light');
-    } else {
-      document.body.classList.remove('light');
+    // ===== THEME =====
+    function initTheme() {
+      const btn = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('wam_theme') || 'dark';
+      applyTheme(saved, btn);
+      btn?.addEventListener('click', () => {
+        const next = document.body.classList.contains('light') ? 'dark' : 'light';
+        localStorage.setItem('wam_theme', next);
+        applyTheme(next, btn);
+      });
     }
-  });
+    function applyTheme(theme, btn) {
+      if (theme === 'light') { document.body.classList.add('light'); if (btn) btn.textContent = '🌑'; }
+      else { document.body.classList.remove('light'); if (btn) btn.textContent = '🌕'; }
+    }
 
-  function clearCart() {
-    localStorage.removeItem('cart');
-    location.reload();
-  }
+    // ===== CURSOR =====
+    function initCursor() {
+      const dot  = document.querySelector('.cursor');
+      const ring = document.querySelector('.cursor-ring');
+      if (!dot || !ring) return;
+      document.addEventListener('mousemove', e => {
+        dot.style.left  = e.clientX + 'px';
+        dot.style.top   = e.clientY + 'px';
+        ring.style.left = e.clientX + 'px';
+        ring.style.top  = e.clientY + 'px';
+      });
+    }
 
-  // ... (sisanya: renderCart, dll)
+    // ===== CONFETTI =====
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ['#FF6B35','#FFB347','#56CF8A','#42A5F5','#EC407A','#FFEB3B'];
+      const pieces = Array.from({ length: 100 }, () => ({
+        x: Math.random() * canvas.width,
+        y: -10 - Math.random() * 80,
+        r: Math.random() * 8 + 3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 6,
+        vy: Math.random() * 4 + 2,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.18,
+        shape: Math.random() > 0.5 ? 'rect' : 'circle',
+      }));
+      let frame = 0;
+      const maxFrames = 160;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.angle += p.spin; p.vy += 0.06;
+          const alpha = Math.max(0, 1 - frame / maxFrames);
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.fillStyle = p.color;
+          if (p.shape === 'rect') ctx.fillRect(-p.r, -p.r/2, p.r*2, p.r);
+          else { ctx.beginPath(); ctx.arc(0,0,p.r/2,0,Math.PI*2); ctx.fill(); }
+          ctx.restore();
+        });
+        frame++;
+        if (frame < maxFrames) requestAnimationFrame(animate);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      animate();
+    }
 
-    // Ambil keranjang dari localStorage
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // ===== CART =====
+    let cart = JSON.parse(localStorage.getItem('wam_cart')) || [];
 
-    function clearCart() {
-      localStorage.removeItem('cart');
-      location.reload();
+    function clearCartPage() {
+      if (!confirm('Yakin mau hapus semua barang di keranjang?')) return;
+      localStorage.removeItem('wam_cart');
+      cart = [];
+      renderCart();
+    }
+
+    function doCheckout() {
+      if (cart.length === 0) return;
+      launchConfetti();
+      document.getElementById('checkoutModal').classList.add('open');
+    }
+
+    function finishCheckout() {
+      localStorage.removeItem('wam_cart');
+      cart = [];
+      document.getElementById('checkoutModal').classList.remove('open');
+      renderCart();
     }
 
     function renderCart() {
       const content = document.getElementById('cartContent');
+      const actions = document.getElementById('cartActions');
       if (!content) return;
 
       if (cart.length === 0) {
         content.innerHTML = `
-          <div class="card" style="grid-column:1/-1;text-align:center;padding:40px">
-            <p style="font-size:1.2rem">🛒 Keranjang kosong</p>
-            <p style="margin-top:10px">
-              <a href="index.html" style="color:var(--accent);text-decoration:underline">Kembali ke toko</a>
+          <div class="cart-empty-state">
+            <div class="empty-emoji">🛒</div>
+            <p style="font-size:1.1rem;font-weight:800;margin-bottom:8px;color:var(--text)">
+              Keranjangmu masih kosong
             </p>
-          </div>
-        `;
+            <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:20px;">
+              Yuk, jajan dulu di warung!
+            </p>
+            <a href="index.html" class="btn-checkout" style="text-decoration:none;display:inline-block;">
+              Belanja Sekarang 🛍️
+            </a>
+          </div>`;
+        if (actions) actions.style.display = 'none';
         return;
       }
 
-      const total = cart.reduce((sum, item) => sum + item.harga * item.qty, 0);
+      const total = cart.reduce((s, i) => s + i.harga * i.qty, 0);
+      const itemCount = cart.reduce((s, i) => s + i.qty, 0);
 
       content.innerHTML = `
-        <div class="cart-list">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:8px;">
           ${cart.map(item => `
-            <div class="cart-item-full">
-              <div>
-                <strong>${item.nama}</strong><br>
+            <div class="cart-list-item">
+              <div class="cart-item-info">
+                <strong>${escHtml(item.nama)}</strong>
                 <small>${item.qty} × Rp ${item.harga.toLocaleString('id-ID')}</small>
               </div>
-              <div>Rp ${(item.harga * item.qty).toLocaleString('id-ID')}</div>
+              <div class="cart-item-subtotal">
+                Rp ${(item.harga * item.qty).toLocaleString('id-ID')}
+              </div>
             </div>
           `).join('')}
         </div>
 
-        <div class="cart-total-section">
-          <h3>Total: Rp ${total.toLocaleString('id-ID')}</h3>
-          <div class="instructions">
+        <div class="cart-total-card">
+          <div style="color:var(--text-muted);font-size:0.85rem;font-weight:700;margin-bottom:4px;">
+            ${itemCount} item
+          </div>
+          <div class="cart-grand-total">
+            Rp ${total.toLocaleString('id-ID')}
+          </div>
+          <div class="cart-instructions">
             <p>✅ Ambil barang sesuai jumlah di keranjang</p>
-            <p>✅ Bayar tunai di kotak sebelah kiri / QRIS di sebelah kanan</p>
-            <p>✅ Uang pas lebih dihargai</p>
+            <p>✅ Bayar tunai di kotak kiri / QRIS di kotak kanan</p>
+            <p>✅ Uang pas lebih dihargai, makasih! 🙏</p>
           </div>
         </div>
       `;
+
+      if (actions) actions.style.display = 'flex';
     }
 
-    document.addEventListener('DOMContentLoaded', renderCart);
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initCursor();
+      renderCart();
+    });
   </script>
-
-  <style>
-    .cart-list {
-      margin-bottom: 30px;
-    }
-
-    .cart-item-full {
-      display: flex;
-      justify-content: space-between;
-      padding: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .cart-total-section {
-      background: var(--card);
-      padding: 25px;
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .cart-total-section h3 {
-      font-size: 1.5rem;
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-
-    .instructions {
-      background: rgba(38, 166, 154, 0.05);
-      padding: 15px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    .cart-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .btn-secondary, .btn-clear {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .btn-secondary {
-      background: var(--card);
-      color: var(--text);
-    }
-
-    .btn-clear {
-      background: #ef5350;
-      color: white;
-    }
-  </style>
 </body>
 </html>

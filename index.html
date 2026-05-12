@@ -3,79 +3,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WARUNG MANDIRI</title>
+  <title>Warung Amanah Mandiri • Kost Moluska</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>📦</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🛍️</text></svg>">
 </head>
 <body>
-  <!-- Shader Background -->
-  <div class="shader"></div>
-  
-  <!-- Noise Grain -->
+
+  <!-- Background Orbs -->
+  <div class="bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
   <div class="noise"></div>
 
   <!-- Custom Cursor -->
   <div class="cursor"></div>
-  <div class="cursor-trail"></div>
+  <div class="cursor-ring"></div>
 
-  
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
 
-  <!-- Header -->
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ===== HEADER ===== -->
   <header>
-    <div class="header-content">
-      <h1>WARUNG AMANAH MANDIRI<span>.</span></h1>
-      <div class="cart-summary">
-      <span>🛒 <span id="cartCountFooter">0</span> item</span>
-      <span>Total: Rp <span id="cartTotalFooter">0</span></span>
-      <a href="cart.html" class="btn-cart">Lihat Keranjang</a>
+    <div class="header-inner">
+      <div class="logo-block">
+        <h1>WARUNG AMANAH<span>.</span></h1>
+        <small>Kost Moluska • Self Service</small>
+      </div>
+      <div class="header-right">
+        <a href="cart.html" class="cart-pill">
+          🛒 <span class="js-cart-count cart-count-badge">0</span>
+          <span class="cart-total-text">· Rp <span class="js-cart-total">0</span></span>
+        </a>
+        <button class="btn-toggle" id="themeToggle" title="Ganti tema">🌕</button>
+      </div>
     </div>
-    </div>
-    <button class="mode-toggle" id="modeToggle">🌕</button>
   </header>
 
-  <!-- Main Content -->
+  <!-- ===== MAIN ===== -->
   <main class="container">
+
+    <!-- Greeting -->
+    <div class="greeting-bar">
+      <div class="greet-text" id="greetingText">👋 Halo, Penghuni Moluska!</div>
+      <div class="visit-badge" id="visitBadge">Kunjungan ke-1 🎉</div>
+    </div>
+
+    <!-- Fortune Banner -->
+    <div class="fortune-banner" id="fortuneBanner" title="Klik untuk quote berikutnya">
+      <span class="fortune-icon">✨</span>
+      <span class="fortune-text">Loading...</span>
+      <span class="fortune-hint">klik untuk lanjut →</span>
+    </div>
+
+    <!-- Mood Tabs -->
+    <div class="mood-section">
+      <div class="mood-label">Lagi pengen apa nih?</div>
+      <div class="mood-tabs" id="moodTabs"></div>
+    </div>
+
+    <!-- Search & Filter -->
     <div class="search-section">
-      <input type="text" id="search" placeholder="Cari barang…" />
+      <input type="text" id="search" placeholder="🔍 Cari barang…" autocomplete="off" />
       <select id="category">
-        <option value="">Semua</option>
-        <option value="Kebersihan">Kebersihan</option>
-        <option value="Makanan Ringan">Makanan Ringan</option>
-        <option value="Minuman">Minuman</option>
-        <option value="Mie Instan">Mie Instan</option>
-        <option value="Lain-Lain">Lain-Lain</option>
-        <option value="Bumbu & Masak">Bumbu & Masak</option>
+        <option value="">Semua Kategori</option>
+        <option value="Makanan Ringan">🍿 Makanan Ringan</option>
+        <option value="Minuman">💧 Minuman</option>
+        <option value="Mie Instan">🍜 Mie Instan</option>
+        <option value="Kebersihan">🧼 Kebersihan</option>
+        <option value="Bumbu & Masak">🍳 Bumbu & Masak</option>
+        <option value="Lain-Lain">📦 Lain-Lain</option>
       </select>
     </div>
 
-    <!-- Keranjang Mini -->
-     <a href="cart.html">
-      <div class="cart-badge" id="cartBadge">
-        <span>🛒</span>
-        <span id="cartCount">0</span>
-      </div></a>
-
-      <!-- Modal Keranjang (opsional) -->
-      <div class="cart-modal" id="cartModal">
-        <h3>Keranjang Belanja</h3>
-        <div id="cartItems"></div>
-        <div class="cart-total">
-          Total: <strong>Rp <span id="cartTotal">0</span></strong>
-        </div>
-        <button class="add" onclick="clearCart()">Hapus Semua</button>
-      </div>
-
+    <!-- Product Grid -->
     <div id="products" class="grid"></div>
-    <div id="loading" class="loading">Memuat data...</div>
+    <div id="loading" class="loading"><span class="loading-dots">Memuat produk</span></div>
+
   </main>
 
-  <!-- Footer -->
+  <!-- ===== FOOTER ===== -->
   <footer>
-    <p class="update-time">Update: <span id="last-update">12/15/2025</span></p>
-    <p class="contact">Kritik dan Saran <a href="https://wa.me/6289659848900">Hubungi kami</a></p>
+    <p>Dibuat dengan <span class="footer-heart">❤️</span> untuk penghuni Kost Moluska</p>
+    <p style="margin-top:6px">Kritik & Saran → <a href="https://wa.me/6289659848900">WhatsApp kami</a></p>
   </footer>
-  <!-- Footer -->
+
+  <!-- ===== FAB BUTTONS ===== -->
+  <a href="cart.html" class="fab-cart" title="Lihat Keranjang">
+    🛒
+    <span class="fab-count js-cart-count">0</span>
+  </a>
+  <button class="fab-game" onclick="openGame()" title="Main Tebak Harga!">🎮</button>
+
+  <!-- ===== COMBO MODAL ===== -->
+  <div class="modal-overlay" id="comboModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeComboModal()">✕</button>
+      <h2>🔥 Combo Suggestion!</h2>
+      <p>Kamu beli <strong id="comboTrigger"></strong>. Enak nih kalau ditambah:</p>
+      <div class="combo-items" id="comboList"></div>
+      <button class="combo-skip" onclick="closeComboModal()">Nggak dulu, makasih 🙏</button>
+    </div>
+  </div>
+
+  <!-- ===== GAME MODAL ===== -->
+  <div class="modal-overlay" id="gameModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeGame()">✕</button>
+      <h2>🎯 Tebak Harga!</h2>
+      <p>Tebak harga barang ini. Kalau bener, kamu jago! 😎</p>
+
+      <img id="gameImg" class="game-product-img"
+        src="https://via.placeholder.com/150" alt="produk" />
+      <div class="game-product-name" id="gameProductName">—</div>
+
+      <div class="game-options" id="gameOptions"></div>
+      <div class="game-result" id="gameResult"></div>
+      <div class="game-score" id="gameScore">Skor: 0 / 0 🎯</div>
+
+      <button class="game-next-btn" onclick="nextGameQuestion()">
+        Soal Berikutnya ▶
+      </button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
