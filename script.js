@@ -115,17 +115,48 @@ function initMoodTabs() {
 // ===== LOAD DATA =====
 async function loadProducts() {
   try {
-    const res = await fetch('data/stock.json?' + Date.now());
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    products = await res.json();
+    // NOTE: Jika halaman dibuka via file://, fetch() ke file:// biasanya gagal (CORS).
+    // Solusi: pakai fetch() hanya untuk http/https, dan kalau file:// pakai dynamic import JSON lewat bundler dev/server.
+    // Karena di sini kita tetap harus berjalan tanpa server,
+    // maka kita lakukan fallback: baca JSON dari variable global jika ada, atau tampilkan error yang jelas.
+
+    // Cek origin
+    const isFileOrigin = window.location.protocol === 'file:';
+
+    if (isFileOrigin) {
+      // Fallback untuk mode file://
+      // Ambil dari script tag inline jika user menjalankan via editor yang meng-copy JSON jadi global.
+      // Kalau tidak ada, beri pesan agar user menjalankan via server.
+      const inline = window.__STOCK_JSON__;
+      if (Array.isArray(inline) && inline.length) {
+        products = inline;
+      } else {
+        throw new Error('Jalankan melalui server (bukan file://) agar fetch data/stock.json berfungsi.');
+      }
+    } else {
+      const url = new URL('data/stock.json', window.location.href);
+      const res = await fetch(url.toString() + '?' + Date.now());
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const d = await res.json();
+      products = Array.isArray(d) ? d : (d?.data && Array.isArray(d.data) ? d.data : []);
+      if (!products.length) throw new Error('stock.json tidak berisi array produk');
+    }
+
     render();
   } catch (err) {
     console.error('Gagal muat data:', err);
-    if (grid) grid.innerHTML = `
-      <div class="empty-state">
-        <span class="empty-icon">❌</span>
-        Gagal memuat produk. Periksa file <code>data/stock.json</code>
-      </div>`;
+    if (grid) {
+      const msg = (String(err && err.message) || '').toLowerCase();
+      const extra = msg.includes('file://') || msg.includes('server')
+        ? '<br><br><b>Fix:</b> buka index.html lewat http server (mis. VSCode Live Server) agar tidak kena CORS.'
+        : '';
+      grid.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-icon">❌</span>
+          Gagal memuat produk. Periksa file <code>data/stock.json</code>
+          ${extra}
+        </div>`;
+    }
   } finally {
     if (loadingEl) loadingEl.style.display = 'none';
   }
